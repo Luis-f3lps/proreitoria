@@ -20,6 +20,7 @@ const contadorProjetos = document.getElementById('contadorProjetos');
 const selectUnidade = document.getElementById('selectUnidade');
 
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, graficoCoordenadores;
+
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
@@ -70,11 +71,11 @@ function renderizarLista(dados) {
     const div = document.createElement('div');
     div.style.padding = '15px';
     div.style.marginBottom = '12px';
-    div.style.backgroundColor = '#ffffff'; // Fundo branco puro
+    div.style.backgroundColor = '#ffffff'; 
     div.style.borderRadius = '8px';
-    div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; // Sombra leve
-    div.style.borderLeft = '5px solid #2e7d32'; // Faixa verde do IFNMG na lateral
-    div.style.transition = 'transform 0.2s'; // Efeito ao passar o mouse
+    div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; 
+    div.style.borderLeft = '5px solid #2e7d32'; 
+    div.style.transition = 'transform 0.2s'; 
     div.innerHTML = `
       <strong style="color: #1a1a1a; font-size: 1.1em; display: block; margin-bottom: 8px;">
         ${projeto['Título do Projeto']}
@@ -86,7 +87,6 @@ function renderizarLista(dados) {
       </small>
     `;
 
-    // Efeito de hover (levanta o card ao passar o mouse)
     div.addEventListener('mouseenter', () => div.style.transform = 'translateY(-2px)');
     div.addEventListener('mouseleave', () => div.style.transform = 'translateY(0)');
 
@@ -101,11 +101,20 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   const contagemAreas = contarOcorrencias(dadosCompletos, 'Área');
   const dadosAno = contarProjetosPorAno(dadosCompletos);
 
+  const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
+  const top20Coordenadores = Object.entries(contagemCoordenadores)
+    .sort((a, b) => b[1] - a[1]) 
+    .slice(0, 20); 
+
+  const labelsCoordenadores = top20Coordenadores.map(item => item[0]);
+  const valoresCoordenadores = top20Coordenadores.map(item => item[1]);
+
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
   if (graficoFormacao) graficoFormacao.destroy();
   if (graficoAreas) graficoAreas.destroy();
   if (graficoAno) graficoAno.destroy();
+  if (graficoCoordenadores) graficoCoordenadores.destroy();
 
   graficoUnidades = new Chart(document.getElementById('graficoUnidades'), {
     type: 'bar',
@@ -173,6 +182,28 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       }
     }
   });
+
+  graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
+    type: 'bar',
+    data: {
+      labels: labelsCoordenadores,
+      datasets: [{
+        label: 'Total de Projetos',
+        data: valoresCoordenadores,
+        backgroundColor: '#1976d2', 
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y', 
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1 } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
 }
 
 function inicializarDashboard() {
@@ -192,7 +223,10 @@ function aplicarFiltros() {
     return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
       (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
       (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
-  }); atualizarGraficos(dadosParaGraficos, projetosIFNMG); renderizarLista(dadosParaLista);
+  }); 
+  
+  atualizarGraficos(dadosParaGraficos, projetosIFNMG); 
+  renderizarLista(dadosParaLista);
 }
 
 inputPesquisa.addEventListener('input', aplicarFiltros);
@@ -232,34 +266,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     innerContainer.style.setProperty("--scroll-distance", `${originalWidth}px`);
   }
-});
-const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
-const top20Coordenadores = Object.entries(contagemCoordenadores)
-    .sort((a, b) => b[1] - a[1]) 
-    .slice(0, 20); 
-
-const labelsCoordenadores = top20Coordenadores.map(item => item[0]);
-const valoresCoordenadores = top20Coordenadores.map(item => item[1]);
-
-if (graficoCoordenadores) graficoCoordenadores.destroy();
-graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
-    type: 'bar',
-    data: {
-        labels: labelsCoordenadores,
-        datasets: [{
-            label: 'Total de Projetos',
-            data: valoresCoordenadores,
-            backgroundColor: '#1976d2', // Azul do IFNMG
-            borderRadius: 4
-        }]
-    },
-    options: {
-        indexAxis: 'y', 
-        scales: {
-            x: { beginAtZero: true, ticks: { stepSize: 1 } }
-        },
-        plugins: {
-            legend: { display: false } 
-        }
-    }
 });
