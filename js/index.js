@@ -19,8 +19,7 @@ const containerLista = document.getElementById('containerLista');
 const contadorProjetos = document.getElementById('contadorProjetos');
 const selectUnidade = document.getElementById('selectUnidade');
 
-let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno;
-
+let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, graficoCoordenadores;
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
@@ -186,18 +185,14 @@ function aplicarFiltros() {
   const termo = inputPesquisa.value.toLowerCase();
   const unidadeSelecionada = selectUnidade.value;
 
-  const dadosFiltradosApenasPesquisa = projetosIFNMG.filter(projeto => {
+  const dadosParaGraficos = projetosIFNMG.filter(projeto => {
+    return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
+  });
+  const dadosParaLista = dadosParaGraficos.filter(projeto => {
     return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
       (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
       (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
-  });
-
-  const dadosFiltradosTotal = dadosFiltradosApenasPesquisa.filter(projeto => {
-    return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
-  });
-
-  atualizarGraficos(dadosFiltradosTotal, dadosFiltradosApenasPesquisa);
-  renderizarLista(dadosFiltradosTotal);
+  }); atualizarGraficos(dadosParaGraficos, projetosIFNMG); renderizarLista(dadosParaLista);
 }
 
 inputPesquisa.addEventListener('input', aplicarFiltros);
@@ -237,4 +232,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     innerContainer.style.setProperty("--scroll-distance", `${originalWidth}px`);
   }
+});
+const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
+const top20Coordenadores = Object.entries(contagemCoordenadores)
+    .sort((a, b) => b[1] - a[1]) 
+    .slice(0, 20); 
+
+const labelsCoordenadores = top20Coordenadores.map(item => item[0]);
+const valoresCoordenadores = top20Coordenadores.map(item => item[1]);
+
+if (graficoCoordenadores) graficoCoordenadores.destroy();
+graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
+    type: 'bar',
+    data: {
+        labels: labelsCoordenadores,
+        datasets: [{
+            label: 'Total de Projetos',
+            data: valoresCoordenadores,
+            backgroundColor: '#1976d2', // Azul do IFNMG
+            borderRadius: 4
+        }]
+    },
+    options: {
+        indexAxis: 'y', 
+        scales: {
+            x: { beginAtZero: true, ticks: { stepSize: 1 } }
+        },
+        plugins: {
+            legend: { display: false } 
+        }
+    }
 });
