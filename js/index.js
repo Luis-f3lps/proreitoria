@@ -12,156 +12,182 @@ function opentab(tabname) {
     }
   }
   event.currentTarget.classList.add("active-link");
-} 
+}
 const inputPesquisa = document.getElementById('barraPesquisa');
 const containerLista = document.getElementById('containerLista');
 const contadorProjetos = document.getElementById('contadorProjetos');
-
+const selectUnidade = document.getElementById('selectUnidade');
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno;
-
 function contarOcorrencias(dados, chave) {
-    return dados.reduce((acc, projeto) => {
-        const valor = projeto[chave] || 'Não Informado';
-        acc[valor] = (acc[valor] || 0) + 1;
-        return acc;
-    }, {});
+  return dados.reduce((acc, projeto) => {
+    const valor = projeto[chave] || 'Não Informado';
+    acc[valor] = (acc[valor] || 0) + 1;
+    return acc;
+  }, {});
 }
 
 function contarProjetosPorAno(dados) {
-    const contagem = {};
+  const contagem = {};
 
-    dados.forEach(projeto => {
-        const dataInicio = projeto['Vigência (Início)'];
+  dados.forEach(projeto => {
+    const dataInicio = projeto['Vigência (Início)'];
 
-        if (dataInicio && dataInicio.trim() !== "") {
-            const dataObj = new Date(dataInicio);
-            const ano = dataObj.getFullYear();
+    if (dataInicio && dataInicio.trim() !== "") {
+      const dataObj = new Date(dataInicio);
+      const ano = dataObj.getFullYear();
 
-            if (!isNaN(ano)) {
-                contagem[ano] = (contagem[ano] || 0) + 1;
-            }
-        }
-    });
+      if (!isNaN(ano)) {
+        contagem[ano] = (contagem[ano] || 0) + 1;
+      }
+    }
+  });
 
-    const anosOrdenados = Object.keys(contagem).sort();
-    const valoresOrdenados = anosOrdenados.map(ano => contagem[ano]);
+  const anosOrdenados = Object.keys(contagem).sort();
+  const valoresOrdenados = anosOrdenados.map(ano => contagem[ano]);
 
-    return { anos: anosOrdenados, valores: valoresOrdenados };
+  return { anos: anosOrdenados, valores: valoresOrdenados };
 }
+function popularSelectUnidades() {
+  const unidadesUnicas = [...new Set(projetosIFNMG.map(p => p['Unidade']))].filter(Boolean).sort();
 
+  selectUnidade.innerHTML = '<option value="">Todos os Campi</option>';
+  unidadesUnicas.forEach(unidade => {
+    const option = document.createElement('option');
+    option.value = unidade;
+    option.textContent = unidade;
+    selectUnidade.appendChild(option);
+  });
+}
 function renderizarLista(dados) {
-    contadorProjetos.innerText = `Mostrando ${dados.length} projetos.`;
-    containerLista.innerHTML = '';
+  contadorProjetos.innerText = `Mostrando ${dados.length} projetos.`;
+  containerLista.innerHTML = '';
 
-    dados.slice(0, 100).forEach(projeto => {
-        const div = document.createElement('div');
-        div.style.padding = '10px';
-        div.style.borderBottom = '1px solid #ddd';
-        div.innerHTML = `<strong>${projeto['Título do Projeto']}</strong><br>
+  dados.slice(0, 100).forEach(projeto => {
+    const div = document.createElement('div');
+    div.style.padding = '10px';
+    div.style.borderBottom = '1px solid #ddd';
+    div.innerHTML = `<strong>${projeto['Título do Projeto']}</strong><br>
                          <small>${projeto['Unidade']} | ${projeto['Área']} | Coordenador: ${projeto['Coordenador']}</small>`;
-        containerLista.appendChild(div);
-    });
+    containerLista.appendChild(div);
+  });
 }
 
 function atualizarGraficos(dados) {
-    const contagemUnidades = contarOcorrencias(dados, 'Unidade');
-    const contagemTipos = contarOcorrencias(dados, 'Tipo');
-    const contagemFormacao = contarOcorrencias(dados, 'Formação');
-    const contagemAreas = contarOcorrencias(dados, 'Área');
-    const dadosAno = contarProjetosPorAno(dados);
+  const contagemUnidades = contarOcorrencias(dados, 'Unidade');
+  const contagemTipos = contarOcorrencias(dados, 'Tipo');
+  const contagemFormacao = contarOcorrencias(dados, 'Formação');
+  const contagemAreas = contarOcorrencias(dados, 'Área');
+  const dadosAno = contarProjetosPorAno(dados);
 
-    if (graficoUnidades) graficoUnidades.destroy();
-    if (graficoTipos) graficoTipos.destroy();
-    if (graficoFormacao) graficoFormacao.destroy();
-    if (graficoAreas) graficoAreas.destroy();
-    if (graficoAno) graficoAno.destroy();
+  if (graficoUnidades) graficoUnidades.destroy();
+  if (graficoTipos) graficoTipos.destroy();
+  if (graficoFormacao) graficoFormacao.destroy();
+  if (graficoAreas) graficoAreas.destroy();
+  if (graficoAno) graficoAno.destroy();
 
-    graficoUnidades = new Chart(document.getElementById('graficoUnidades'), {
-        type: 'bar',
-        data: {
-            labels: Object.keys(contagemUnidades),
-            datasets: [{
-                label: 'Projetos',
-                data: Object.values(contagemUnidades),
-                backgroundColor: '#2e7d32'
-            }]
-        }
-    });
+  graficoUnidades = new Chart(document.getElementById('graficoUnidades'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(contagemUnidades),
+      datasets: [{
+        label: 'Projetos',
+        data: Object.values(contagemUnidades),
+        backgroundColor: '#2e7d32'
+      }]
+    }
+  });
 
-    graficoTipos = new Chart(document.getElementById('graficoTipos'), {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(contagemTipos),
-            datasets: [{
-                data: Object.values(contagemTipos),
-                backgroundColor: ['#2e7d32', '#66bb6a', '#a5d6a7', '#1b5e20', '#4caf50']
-            }]
-        }
-    });
+  graficoTipos = new Chart(document.getElementById('graficoTipos'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(contagemTipos),
+      datasets: [{
+        data: Object.values(contagemTipos),
+        backgroundColor: ['#2e7d32', '#66bb6a', '#a5d6a7', '#1b5e20', '#4caf50']
+      }]
+    }
+  });
 
-    graficoFormacao = new Chart(document.getElementById('graficoFormacao'), {
-        type: 'pie',
-        data: {
-            labels: Object.keys(contagemFormacao),
-            datasets: [{
-                data: Object.values(contagemFormacao),
-                backgroundColor: ['#1565c0', '#42a5f5', '#90caf9', '#0d47a1', '#1976d2']
-            }]
-        }
-    });
+  graficoFormacao = new Chart(document.getElementById('graficoFormacao'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(contagemFormacao),
+      datasets: [{
+        data: Object.values(contagemFormacao),
+        backgroundColor: ['#1565c0', '#42a5f5', '#90caf9', '#0d47a1', '#1976d2']
+      }]
+    }
+  });
 
-    graficoAreas = new Chart(document.getElementById('graficoAreas'), {
-        type: 'bar',
-        data: {
-            labels: Object.keys(contagemAreas),
-            datasets: [{
-                label: 'Projetos',
-                data: Object.values(contagemAreas),
-                backgroundColor: '#f57c00'
-            }]
-        },
-        options: { indexAxis: 'y' }
-    });
+  graficoAreas = new Chart(document.getElementById('graficoAreas'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(contagemAreas),
+      datasets: [{
+        label: 'Projetos',
+        data: Object.values(contagemAreas),
+        backgroundColor: '#f57c00'
+      }]
+    },
+    options: { indexAxis: 'y' }
+  });
 
-    graficoAno = new Chart(document.getElementById('graficoAno'), {
-        type: 'line',
-        data: {
-            labels: dadosAno.anos,
-            datasets: [{
-                label: 'Novos Projetos',
-                data: dadosAno.valores,
-                borderColor: '#1976d2',
-                backgroundColor: 'rgba(25, 118, 210, 0.2)',
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options: {
-            scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } }
-            }
-        }
-    });
+  graficoAno = new Chart(document.getElementById('graficoAno'), {
+    type: 'line',
+    data: {
+      labels: dadosAno.anos,
+      datasets: [{
+        label: 'Novos Projetos',
+        data: dadosAno.valores,
+        borderColor: '#1976d2',
+        backgroundColor: 'rgba(25, 118, 210, 0.2)',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+      }
+    }
+  });
 }
 
 function inicializarDashboard() {
-    atualizarGraficos(projetosIFNMG);
-    renderizarLista(projetosIFNMG);
+  atualizarGraficos(projetosIFNMG);
+  renderizarLista(projetosIFNMG); popularSelectUnidades();
 }
+function aplicarFiltros() {
+  const termo = inputPesquisa.value.toLowerCase();
+  const unidadeSelecionada = selectUnidade.value;
 
+  const dadosFiltrados = projetosIFNMG.filter(projeto => {
+    const atendePesquisa = (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
+      (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
+      (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
+
+    const atendeUnidade = unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
+
+    return atendePesquisa && atendeUnidade;
+  });
+
+  atualizarGraficos(dadosFiltrados);
+  renderizarLista(dadosFiltrados);
+}
 inputPesquisa.addEventListener('input', (e) => {
-    const termo = e.target.value.toLowerCase();
-    
-    const dadosFiltrados = projetosIFNMG.filter(projeto => 
-        (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
-        (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
-        (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo))
-    );
+  const termo = e.target.value.toLowerCase();
 
-    atualizarGraficos(dadosFiltrados);
-    renderizarLista(dadosFiltrados);
+  const dadosFiltrados = projetosIFNMG.filter(projeto =>
+    (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
+    (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
+    (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo))
+  );
+
+  atualizarGraficos(dadosFiltrados);
+  renderizarLista(dadosFiltrados);
 });
-
+inputPesquisa.addEventListener('input', aplicarFiltros);
+selectUnidade.addEventListener('change', aplicarFiltros);
 window.onload = inicializarDashboard;
 
 document.addEventListener("DOMContentLoaded", function () {
