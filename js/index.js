@@ -13,11 +13,14 @@ function opentab(tabname) {
   }
   event.currentTarget.classList.add("active-link");
 }
+
 const inputPesquisa = document.getElementById('barraPesquisa');
 const containerLista = document.getElementById('containerLista');
 const contadorProjetos = document.getElementById('contadorProjetos');
 const selectUnidade = document.getElementById('selectUnidade');
+
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno;
+
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
@@ -47,6 +50,7 @@ function contarProjetosPorAno(dados) {
 
   return { anos: anosOrdenados, valores: valoresOrdenados };
 }
+
 function popularSelectUnidades() {
   const unidadesUnicas = [...new Set(projetosIFNMG.map(p => p['Unidade']))].filter(Boolean).sort();
 
@@ -58,6 +62,7 @@ function popularSelectUnidades() {
     selectUnidade.appendChild(option);
   });
 }
+
 function renderizarLista(dados) {
   contadorProjetos.innerText = `Mostrando ${dados.length} projetos.`;
   containerLista.innerHTML = '';
@@ -67,17 +72,17 @@ function renderizarLista(dados) {
     div.style.padding = '10px';
     div.style.borderBottom = '1px solid #ddd';
     div.innerHTML = `<strong>${projeto['Título do Projeto']}</strong><br>
-                         <small>${projeto['Unidade']} | ${projeto['Área']} | Coordenador: ${projeto['Coordenador']}</small>`;
+                     <small>${projeto['Unidade']} | ${projeto['Área']} | Coordenador: ${projeto['Coordenador']}</small>`;
     containerLista.appendChild(div);
   });
 }
 
-function atualizarGraficos(dados) {
-const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
-  const contagemTipos = contarOcorrencias(dados, 'Tipo');
-  const contagemFormacao = contarOcorrencias(dados, 'Formação');
-  const contagemAreas = contarOcorrencias(dados, 'Área');
-const dadosAno = contarProjetosPorAno(dadosCompletos);
+function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
+  const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
+  const contagemTipos = contarOcorrencias(dadosCompletos, 'Tipo');
+  const contagemFormacao = contarOcorrencias(dadosCompletos, 'Formação');
+  const contagemAreas = contarOcorrencias(dadosCompletos, 'Área');
+  const dadosAno = contarProjetosPorAno(dadosCompletos);
 
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
@@ -154,36 +159,29 @@ const dadosAno = contarProjetosPorAno(dadosCompletos);
 }
 
 function inicializarDashboard() {
-atualizarGraficos(projetosIFNMG, projetosIFNMG);
-    renderizarLista(projetosIFNMG);
+  popularSelectUnidades();
+  atualizarGraficos(projetosIFNMG, projetosIFNMG);
+  renderizarLista(projetosIFNMG);
 }
+
 function aplicarFiltros() {
   const termo = inputPesquisa.value.toLowerCase();
   const unidadeSelecionada = selectUnidade.value;
 
-const dadosFiltradosApenasPesquisa = projetosIFNMG.filter(projeto => {
-        return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
-               (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
-               (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
-    });
-const dadosFiltradosTotal = dadosFiltradosApenasPesquisa.filter(projeto => {
-        return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
-    });
-atualizarGraficos(dadosFiltradosTotal, dadosFiltradosApenasPesquisa);
-    renderizarLista(dadosFiltradosTotal);
+  const dadosFiltradosApenasPesquisa = projetosIFNMG.filter(projeto => {
+    return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
+      (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
+      (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
+  });
+  
+  const dadosFiltradosTotal = dadosFiltradosApenasPesquisa.filter(projeto => {
+    return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
+  });
+  
+  atualizarGraficos(dadosFiltradosTotal, dadosFiltradosApenasPesquisa);
+  renderizarLista(dadosFiltradosTotal);
 }
-inputPesquisa.addEventListener('input', (e) => {
-  const termo = e.target.value.toLowerCase();
 
-  const dadosFiltrados = projetosIFNMG.filter(projeto =>
-    (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
-    (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
-    (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo))
-  );
-
-  atualizarGraficos(dadosFiltrados);
-  renderizarLista(dadosFiltrados);
-});
 inputPesquisa.addEventListener('input', aplicarFiltros);
 selectUnidade.addEventListener('change', aplicarFiltros);
 window.onload = inicializarDashboard;
