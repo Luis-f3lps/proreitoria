@@ -11589,7 +11589,7 @@ const projetosIFNMG =[
     "Tipo": "Pesquisa Básica",
     "Formação": "Doutorado",
     "Carreira": "Docente",
-    "Vigência (Início)": "202-03-16",
+    "Vigência (Início)": "2024-03-16",
     "Vigência (Término)": "2025-03-16",
     "Processo SEI": "23395.001684/2024-61",
     "Ética e Segurança": ""

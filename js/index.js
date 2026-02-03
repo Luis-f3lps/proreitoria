@@ -69,10 +69,28 @@ function renderizarLista(dados) {
 
   dados.slice(0, 100).forEach(projeto => {
     const div = document.createElement('div');
-    div.style.padding = '10px';
-    div.style.borderBottom = '1px solid #ddd';
-    div.innerHTML = `<strong>${projeto['Título do Projeto']}</strong><br>
-                     <small>${projeto['Unidade']} | ${projeto['Área']} | Coordenador: ${projeto['Coordenador']}</small>`;
+    div.style.padding = '15px';
+    div.style.marginBottom = '12px';
+    div.style.backgroundColor = '#ffffff'; // Fundo branco puro
+    div.style.borderRadius = '8px';
+    div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; // Sombra leve
+    div.style.borderLeft = '5px solid #2e7d32'; // Faixa verde do IFNMG na lateral
+    div.style.transition = 'transform 0.2s'; // Efeito ao passar o mouse
+    div.innerHTML = `
+      <strong style="color: #1a1a1a; font-size: 1.1em; display: block; margin-bottom: 8px;">
+        ${projeto['Título do Projeto']}
+      </strong>
+      <small style="color: #555; font-size: 0.9em;">
+        <i class="fa-solid fa-location-dot" style="color: #2e7d32;"></i> <b>${projeto['Unidade']}</b> &nbsp;|&nbsp; 
+        <i class="fa-solid fa-book" style="color: #2e7d32;"></i> ${projeto['Área']} &nbsp;|&nbsp; 
+        <i class="fa-solid fa-user" style="color: #2e7d32;"></i> Coordenador: ${projeto['Coordenador']}
+      </small>
+    `;
+
+    // Efeito de hover (levanta o card ao passar o mouse)
+    div.addEventListener('mouseenter', () => div.style.transform = 'translateY(-2px)');
+    div.addEventListener('mouseleave', () => div.style.transform = 'translateY(0)');
+
     containerLista.appendChild(div);
   });
 }
@@ -173,11 +191,11 @@ function aplicarFiltros() {
       (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
       (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
   });
-  
+
   const dadosFiltradosTotal = dadosFiltradosApenasPesquisa.filter(projeto => {
     return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
   });
-  
+
   atualizarGraficos(dadosFiltradosTotal, dadosFiltradosApenasPesquisa);
   renderizarLista(dadosFiltradosTotal);
 }
