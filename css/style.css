@@ -150,6 +150,8 @@ nav ul li a:hover::after {
   padding: 10px 8%;
   margin-right: 100px;
   margin-left: 100px;
+      margin-bottom: 60px;
+
 }
 
 .about-col-1 {

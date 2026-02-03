@@ -128,7 +128,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     }
   });
 
-  graficoTipos = new Chart(document.getElementById('graficoTipos'), {
+graficoTipos = new Chart(document.getElementById('graficoTipos'), {
     type: 'doughnut',
     data: {
       labels: Object.keys(contagemTipos),
@@ -136,6 +136,10 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
         data: Object.values(contagemTipos),
         backgroundColor: ['#2e7d32', '#66bb6a', '#a5d6a7', '#1b5e20', '#4caf50']
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 
@@ -147,6 +151,10 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
         data: Object.values(contagemFormacao),
         backgroundColor: ['#1565c0', '#42a5f5', '#90caf9', '#0d47a1', '#1976d2']
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   });
 
@@ -163,22 +171,43 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     options: { indexAxis: 'y' }
   });
 
-  graficoAno = new Chart(document.getElementById('graficoAno'), {
+graficoAno = new Chart(document.getElementById('graficoAno'), {
     type: 'line',
     data: {
       labels: dadosAno.anos,
       datasets: [{
-        label: 'Novos Projetos',
+        label: 'Projetos Iniciados',
         data: dadosAno.valores,
         borderColor: '#1976d2',
-        backgroundColor: 'rgba(25, 118, 210, 0.2)',
+        backgroundColor: 'rgba(25, 118, 210, 0.15)',
+        borderWidth: 3,
+        pointBackgroundColor: '#1976d2',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
         fill: true,
-        tension: 0.3
+        tension: 0.4
       }]
     },
     options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
       scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 13 } }
+        },
+        y: { 
+          beginAtZero: true, 
+          grid: { color: '#f0f0f0' },
+          ticks: { 
+            stepSize: 50,
+            font: { size: 13 }
+          } 
+        }
       }
     }
   });
