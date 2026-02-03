@@ -73,11 +73,11 @@ function renderizarLista(dados) {
 }
 
 function atualizarGraficos(dados) {
-  const contagemUnidades = contarOcorrencias(dados, 'Unidade');
+const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
   const contagemTipos = contarOcorrencias(dados, 'Tipo');
   const contagemFormacao = contarOcorrencias(dados, 'Formação');
   const contagemAreas = contarOcorrencias(dados, 'Área');
-  const dadosAno = contarProjetosPorAno(dados);
+const dadosAno = contarProjetosPorAno(dadosCompletos);
 
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
@@ -154,25 +154,23 @@ function atualizarGraficos(dados) {
 }
 
 function inicializarDashboard() {
-  atualizarGraficos(projetosIFNMG);
-  renderizarLista(projetosIFNMG); popularSelectUnidades();
+atualizarGraficos(projetosIFNMG, projetosIFNMG);
+    renderizarLista(projetosIFNMG);
 }
 function aplicarFiltros() {
   const termo = inputPesquisa.value.toLowerCase();
   const unidadeSelecionada = selectUnidade.value;
 
-  const dadosFiltrados = projetosIFNMG.filter(projeto => {
-    const atendePesquisa = (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
-      (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
-      (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
-
-    const atendeUnidade = unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
-
-    return atendePesquisa && atendeUnidade;
-  });
-
-  atualizarGraficos(dadosFiltrados);
-  renderizarLista(dadosFiltrados);
+const dadosFiltradosApenasPesquisa = projetosIFNMG.filter(projeto => {
+        return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
+               (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
+               (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
+    });
+const dadosFiltradosTotal = dadosFiltradosApenasPesquisa.filter(projeto => {
+        return unidadeSelecionada === "" || projeto['Unidade'] === unidadeSelecionada;
+    });
+atualizarGraficos(dadosFiltradosTotal, dadosFiltradosApenasPesquisa);
+    renderizarLista(dadosFiltradosTotal);
 }
 inputPesquisa.addEventListener('input', (e) => {
   const termo = e.target.value.toLowerCase();

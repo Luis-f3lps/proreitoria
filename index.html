@@ -77,16 +77,12 @@
                     sua pesquisa.
                 </p>
 
-                <div style="margin: 20px 0;">
-                    <input type="text" id="barraPesquisa" placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
-                        style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
-                </div>
-
                 <div class="tab-titles">
                     <p class="tab-links active-link" onclick="opentab('VisaoGeral')">Visão Geral (Campi)</p>
                     <p class="tab-links" onclick="opentab('AreasConhecimento')">Áreas</p>
                     <p class="tab-links" onclick="opentab('ListaProjetos')">Lista de Projetos</p>
                 </div>
+                    <select id="selectUnidade" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; margin-top: 10px;"></select>
 
                 <div class="tab-contents active-tab" id="VisaoGeral">
                     <div class="chart-container-linhas">
@@ -113,7 +109,6 @@
                 </div>
 
                 <div class="tab-contents" id="AreasConhecimento">
-                    <select id="selectUnidade" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; margin-top: 10px;"></select>
                     <div class="chart-container-linhas">
                         <h2>Projetos por Área do Conhecimento</h2>
                         <canvas id="graficoAreas"></canvas>
