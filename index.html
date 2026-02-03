@@ -99,6 +99,13 @@
                             <canvas id="graficoFormacao"></canvas>
                         </div>
                     </div>
+                    <div class="tab-contents active-tab" id="VisaoGeral">
+    
+    <div class="chart-container-linhas" style="margin-top: 30px;">
+        <h2>Evolução de Projetos por Ano (Início)</h2>
+        <canvas id="graficoAno"></canvas>
+    </div>
+</div>
                 </div>
 
                 <div class="tab-contents" id="AreasConhecimento">
@@ -109,6 +116,10 @@
                 </div>
 
                 <div class="tab-contents" id="ListaProjetos">
+                                    <div style="margin: 20px 0;">
+                    <input type="text" id="barraPesquisa" placeholder="🔍 Pesquisar por projeto, área ou coordenador..." 
+                           style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
+                </div>
                     <h2>Resultados da Pesquisa</h2>
                     <p id="contadorProjetos">Mostrando 1000 projetos.</p>
                     <div id="containerLista" style="max-height: 500px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px;">
