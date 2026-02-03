@@ -12832,7 +12832,7 @@ const projetosIFNMG =[
     "Coordenador": "Osmar Correia Primo",
     "E-mail": "osmar.primo@ifnmg.edu.br",
     "Tipo": "Desenvolvimento Experimental",
-    "Formação": "-",
+    "Formação": "",
     "Carreira": "TAE",
     "Vigência (Início)": "2023-04-15",
     "Vigência (Término)": "2027-04-15",

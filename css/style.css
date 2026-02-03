@@ -1385,3 +1385,15 @@ h2::after {
     background-color: #2e7d32;
     border-radius: 4px;
 }
+#contadorProjetos {
+    display: inline-block;
+    background-color: #e8f5e9; /* Fundo verde super claro */
+    color: #1b5e20; /* Texto verde escuro */
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #c8e6c9;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
