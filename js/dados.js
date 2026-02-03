@@ -1424,21 +1424,7 @@ const projetosIFNMG =[
     "Processo SEI": "23393.000926/2020-86",
     "Ética e Segurança": ""
   },
-  {
-    "Nº": 96,
-    "Título do Projeto": "DESENVOLVIMENTO DE UMA WEB APP PARA A IDENTIFICAÇÃO DE ESPÉCIES VEGETAIS DE HÁBITO ARBÓREO COMO ALTERNATIVA ÀS CHAVES DICOTÔMICAS CONVENCIONAIS",
-    "Área": "Ciências Exatas e da Terra",
-    "Unidade": "Salinas",
-    "Coordenador": "Leonardo Humberto Guimarães",
-    "E-mail": "leonardo.silva@ifnmg.edu.br",
-    "Tipo": "Pesquisa Básica",
-    "Formação": "Doutorado",
-    "Carreira": "Docente",
-    "Vigência (Início)": "5/2/2019",
-    "Vigência (Término)": "30/11/2020",
-    "Processo SEI": "23396.000675/2020-18",
-    "Ética e Segurança": ""
-  },
+
   {
     "Nº": 97,
     "Título do Projeto": "Produção de peixes nativos do rio São Francisco comparados à tilápia do nilo em sistemas de fluxo contínuo de águas recirculantes",
@@ -2909,21 +2895,7 @@ const projetosIFNMG =[
     "Processo SEI": "23393.001976/2021-61",
     "Ética e Segurança": ""
   },
-  {
-    "Nº": 195,
-    "Título do Projeto": "PROTÓTIPO PARA ADEQUAÇÃO DOS LIMITES DE DEMANDA DE ENERGIA ELÉTRICA EM INSTALAÇÕES INSDUSTRIAIS",
-    "Área": "Engenharias",
-    "Unidade": "Porteirinha",
-    "Coordenador": "Caio Venancio Duarte Carvalho",
-    "E-mail": "caio.carvalho@ifnmg.edu.br",
-    "Tipo": "Pesquisa Básica",
-    "Formação": "Mestrado",
-    "Carreira": "Docente",
-    "Vigência (Início)": "9/1/2019",
-    "Vigência (Término)": "30/11/2022",
-    "Processo SEI": "23414.002444/2019-31",
-    "Ética e Segurança": ""
-  },
+
   {
     "Nº": 196,
     "Título do Projeto": "Gestão do Trabalho, Relações de Poder e Adoecimento",
