@@ -22,39 +22,13 @@ a {
 .fa-solid fa-file-pdf {
   color: #ff0000;
 }
-#tudo {
-    display: flex; /* Cria o layout lado a lado */
-    min-height: 100vh; /* Garante que a altura seja de 100% da tela */
-}
 
+/* --------------Home------------------*/
 #header {
-    width: 30%; /* Sua largura definida */
-    background-color: #1a1d23; /* Cor escura do print */
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
 }
-
-.container {
-    width: 70%; /* O restante do espaço */
-    background-color: #f4f7f6; /* Cor de fundo clara */
-    padding: 40px;
-    display: flex;
-    justify-content: center; /* Centraliza o card de agendamento */
-    align-items: flex-start;
-}
-
-/* Ajuste para telas menores (Responsividade) */
-@media (max-width: 768px) {
-    #tudo {
-        flex-direction: column; /* No celular, o menu fica em cima e o conteúdo embaixo */
-    }
-    #header, .container {
-        width: 100%;
-    }
-}
-
 
 .logo {
   width: 40px;
