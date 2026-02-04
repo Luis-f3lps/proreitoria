@@ -800,14 +800,15 @@ nav ul .fa-solid {
 
 .chart-container {
   display: block;
-  height: 700px;
-  width: 700px;
+  height: 500px;
+  width: 500px;
 }
 
 .chart-container-linhas {
-  width: 100%;
-  height: 500px;
-  padding: 10px 2%;
+    width: 100%;
+    height: 500px;
+    padding: 10px 2%;
+    margin-top: 80px;
 }
 
 .tracinho {
@@ -1061,7 +1062,7 @@ nav ul .fa-solid.fa-chevron-down {
   }
 
   .chart-container {
-    width: 700px;
+    width: 500px;
   }
 
   select {
@@ -1128,14 +1129,21 @@ nav ul .fa-solid.fa-chevron-down {
     }
 }
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
-
+h3 {
+    font-size: 1.2rem;
+    color: #1b5e20;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    font-weight: bold;
+}
 .pizza {
   display: flex;
   width: 100%;
   align-items: center;
   text-align: center;
   padding: 10px 8%;
-  margin-top: 100px;
+  margin-top: 150px;
 }
 
 body {
