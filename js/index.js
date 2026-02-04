@@ -21,6 +21,19 @@ const selectUnidade = document.getElementById('selectUnidade');
 
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, graficoCoordenadores;
 
+const paletaCores = [
+  '#00b894', 
+  '#0984e3', 
+  '#6c5ce7', 
+  '#e17055', 
+  '#fdcb6e', 
+  '#00cec9', 
+  '#d63031', 
+  '#e84393', 
+  '#2d3436', 
+  '#636e72'  
+];
+
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
@@ -88,16 +101,16 @@ function renderizarLista(dados) {
     div.style.backgroundColor = '#ffffff'; 
     div.style.borderRadius = '8px';
     div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; 
-    div.style.borderLeft = '5px solid #2e7d32'; 
+    div.style.borderLeft = '5px solid #00b894'; 
     div.style.transition = 'transform 0.2s'; 
     div.innerHTML = `
-      <strong style="color: #1a1a1a; font-size: 1.1em; display: block; margin-bottom: 8px;">
+      <strong style="color: #2d3436; font-size: 1.1em; display: block; margin-bottom: 8px;">
         ${projeto['Título do Projeto']}
       </strong>
-      <small style="color: #555; font-size: 0.9em;">
-        <i class="fa-solid fa-location-dot" style="color: #2e7d32;"></i> <b>${projeto['Unidade']}</b> &nbsp;|&nbsp; 
-        <i class="fa-solid fa-book" style="color: #2e7d32;"></i> ${projeto['Área']} &nbsp;|&nbsp; 
-        <i class="fa-solid fa-user" style="color: #2e7d32;"></i> Coordenador: ${projeto['Coordenador']}
+      <small style="color: #636e72; font-size: 0.9em;">
+        <i class="fa-solid fa-location-dot" style="color: #00b894;"></i> <b>${projeto['Unidade']}</b> &nbsp;|&nbsp; 
+        <i class="fa-solid fa-book" style="color: #0984e3;"></i> ${projeto['Área']} &nbsp;|&nbsp; 
+        <i class="fa-solid fa-user" style="color: #6c5ce7;"></i> Coordenador: ${projeto['Coordenador']}
       </small>
     `;
 
@@ -137,7 +150,8 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       datasets: [{
         label: 'Projetos',
         data: Object.values(contagemUnidades),
-        backgroundColor: '#2e7d32'
+        backgroundColor: '#00b894',
+        borderRadius: 4
       }]
     }
   });
@@ -148,12 +162,16 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       labels: Object.keys(contagemTipos),
       datasets: [{
         data: Object.values(contagemTipos),
-        backgroundColor: ['#2e7d32', '#66bb6a', '#a5d6a7', '#1b5e20', '#4caf50']
+        backgroundColor: paletaCores,
+        borderWidth: 0
       }]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
     }
   });
 
@@ -163,12 +181,16 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       labels: Object.keys(contagemFormacao),
       datasets: [{
         data: Object.values(contagemFormacao),
-        backgroundColor: ['#1565c0', '#42a5f5', '#90caf9', '#0d47a1', '#1976d2']
+        backgroundColor: paletaCores,
+        borderWidth: 0
       }]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
     }
   });
 
@@ -179,7 +201,8 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       datasets: [{
         label: 'Projetos',
         data: Object.values(contagemAreas),
-        backgroundColor: '#f57c00'
+        backgroundColor: '#e17055',
+        borderRadius: 4
       }]
     },
     options: { indexAxis: 'y' }
@@ -192,10 +215,10 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       datasets: [{
         label: 'Projetos Iniciados',
         data: dadosAno.valores,
-        borderColor: '#1976d2',
-        backgroundColor: 'rgba(25, 118, 210, 0.15)',
+        borderColor: '#0984e3',
+        backgroundColor: 'rgba(9, 132, 227, 0.1)',
         borderWidth: 3,
-        pointBackgroundColor: '#1976d2',
+        pointBackgroundColor: '#0984e3',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
         pointRadius: 5,
@@ -213,14 +236,14 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { font: { size: 13 } }
+          ticks: { font: { size: 12 } }
         },
         y: { 
           beginAtZero: true, 
-          grid: { color: '#f0f0f0' },
+          grid: { color: '#f1f2f6' },
           ticks: { 
             stepSize: 50,
-            font: { size: 13 }
+            font: { size: 12 }
           } 
         }
       }
@@ -234,7 +257,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       datasets: [{
         label: 'Total de Projetos',
         data: valoresCoordenadores,
-        backgroundColor: '#1976d2', 
+        backgroundColor: '#6c5ce7', 
         borderRadius: 4
       }]
     },
