@@ -33,14 +33,28 @@ function contarProjetosPorAno(dados) {
   const contagem = {};
 
   dados.forEach(projeto => {
-    const dataInicio = projeto['Vigência (Início)'];
+    let rawData = projeto['Vigência (Início)'];
 
-    if (dataInicio && dataInicio.trim() !== "") {
-      const dataObj = new Date(dataInicio);
-      const ano = dataObj.getFullYear();
+    if (rawData) {
+      const dataString = String(rawData).trim();
 
-      if (!isNaN(ano)) {
-        contagem[ano] = (contagem[ano] || 0) + 1;
+      if (dataString !== "") {
+        let ano;
+
+        if (!isNaN(dataString) && dataString.length === 4) {
+             ano = parseInt(dataString);
+        } 
+        else if (dataString.includes('/')) {
+             const partes = dataString.split('/');
+             if (partes.length === 3) ano = parseInt(partes[2]);
+        }
+        else {
+             ano = new Date(dataString).getFullYear();
+        }
+
+        if (!isNaN(ano) && ano > 2000 && ano < 2100) {
+          contagem[ano] = (contagem[ano] || 0) + 1;
+        }
       }
     }
   });
@@ -128,7 +142,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     }
   });
 
-graficoTipos = new Chart(document.getElementById('graficoTipos'), {
+  graficoTipos = new Chart(document.getElementById('graficoTipos'), {
     type: 'doughnut',
     data: {
       labels: Object.keys(contagemTipos),
@@ -171,7 +185,7 @@ graficoTipos = new Chart(document.getElementById('graficoTipos'), {
     options: { indexAxis: 'y' }
   });
 
-graficoAno = new Chart(document.getElementById('graficoAno'), {
+  graficoAno = new Chart(document.getElementById('graficoAno'), {
     type: 'line',
     data: {
       labels: dadosAno.anos,
@@ -192,6 +206,7 @@ graficoAno = new Chart(document.getElementById('graficoAno'), {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false }
       },
