@@ -75,33 +75,45 @@
 
         <div class="row">
             <div id="dados">
-                <h1 class="sub-title">Visualização de Dados dos Projetos</h1>
-                <p id="bloco-descricao-dados">
-                    Explore os projetos de pesquisa cadastrados no IFNMG. Utilize a barra abaixo para buscar por
-                    coordenador, título ou área do conhecimento. Os gráficos se atualizarão automaticamente conforme a
-                    sua pesquisa.
+                <h1 class="sub-title">Projetos depesquisa e iniciação científica</h1>
+                <p id="bloco-descricao-dados">Os projetos de pesquisa desenvolvidos no IFNMG têm possibilitado a atuação
+                    de pesquisadores no desenvolvimento de conhecimento e inovação, em âmbito local e regional, assim
+                    como de estudantes na iniciação
+                    científica e tecnológica.
+
                 </p>
                 <div class="chart-container-linhas">
                     <h2>Distribuição de Projetos por Campus</h2>
                     <canvas id="graficoUnidades"></canvas>
                 </div>
 
-                <h1 class="sub-title" style="margin-top: 90px;">Graficos</h1>
+                <h1 class="sub-title" style="margin-top: 90px;">Visualização de Dados dos Projetos</h1>
                 <p id="bloco-descricao-dados">
-                    O principal objetivo do portal é centralizar, preservar e democratizar o acesso à produção
-                    intelectual e científica desenvolvida no âmbito do IFNMG, atuando como o principal instrumento de
-                    transparência e difusão do conhecimento da instituição.
+                    Explore os projetos de pesquisa cadastrados no IFNMG. Utilize a barra abaixo para buscar por
+                    coordenador, título ou área do conhecimento. Os gráficos se atualizarão automaticamente conforme a
+                    sua pesquisa.
                 </p>
                 <select id="selectUnidade" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;     margin-top: 30px;
 "></select>
 
                 <div class="tab-titles">
-                    <p class="tab-links active-link" onclick="opentab('VisaoGeral')">Visão Geral (Campi)</p>
-                    <p class="tab-links" onclick="opentab('AreasConhecimento')">Áreas</p>
-                    <p class="tab-links" onclick="opentab('ListaProjetos')">Lista de Projetos</p>
+                    <p class="tab-links" onclick="opentab('VisaoGeral')">Graficos Visão Geral(Campi) e por Ano</p>
+                    <p class="tab-links" onclick="opentab('AreasConhecimento')">Graficos por Áreas e Coordenadores</p>
+                    <p class="tab-links active-link" onclick="opentab('ListaProjetos')">Lista de Projetos</p>
                 </div>
-
-                <div class="tab-contents active-tab" id="VisaoGeral">
+                <div class="tab-contents active-link" id="ListaProjetos">
+                    <div style="margin: 20px 0;">
+                        <input type="text" id="barraPesquisa"
+                            placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
+                            style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
+                    </div>
+                    <h2>Resultados da Pesquisa</h2>
+                    <p id="contadorProjetos">Mostrando 1000 projetos.</p>
+                    <div id="containerLista"
+                        style="max-height: 800px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="tab-contents" id="VisaoGeral">
 
                     <div class="pizza">
                         <div class="chart-container">
@@ -113,12 +125,10 @@
                             <canvas id="graficoFormacao"></canvas>
                         </div>
                     </div>
-                    <div class="tab-contents active-tab" id="VisaoGeral">
 
-                        <div class="chart-container-linhas">
-                            <h2>Evolução de Projetos por Ano (Início)</h2>
-                            <canvas id="graficoAno"></canvas>
-                        </div>
+                    <div class="chart-container-linhas">
+                        <h2>Evolução de Projetos por Ano (Início)</h2>
+                        <canvas id="graficoAno"></canvas>
                     </div>
                 </div>
 
@@ -130,19 +140,6 @@
                     <div class="chart-container-linhas">
                         <h2>Top 20 Coordenadores com Mais Projetos</h2>
                         <canvas id="graficoCoordenadores"></canvas>
-                    </div>
-                </div>
-
-                <div class="tab-contents" id="ListaProjetos">
-                    <div style="margin: 20px 0;">
-                        <input type="text" id="barraPesquisa"
-                            placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
-                            style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
-                    </div>
-                    <h2>Resultados da Pesquisa</h2>
-                    <p id="contadorProjetos">Mostrando 1000 projetos.</p>
-                    <div id="containerLista"
-                        style="max-height: 800px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px;">
                     </div>
                 </div>
 
