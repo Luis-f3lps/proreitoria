@@ -97,11 +97,12 @@
 "></select>
 
                 <div class="tab-titles">
+                    <p class="tab-links active-link" onclick="opentab('ListaProjetos')">Lista de Projetos</p>
+
                     <p class="tab-links" onclick="opentab('VisaoGeral')">Graficos Visão Geral(Campi) e por Ano</p>
                     <p class="tab-links" onclick="opentab('AreasConhecimento')">Graficos por Áreas e Coordenadores</p>
-                    <p class="tab-links active-link" onclick="opentab('ListaProjetos')">Lista de Projetos</p>
                 </div>
-                <div class="tab-contents active-link" id="ListaProjetos">
+                <div class="tab-contents active-tab" id="ListaProjetos">
                     <div style="margin: 20px 0;">
                         <input type="text" id="barraPesquisa"
                             placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
