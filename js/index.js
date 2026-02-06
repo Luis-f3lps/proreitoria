@@ -111,6 +111,8 @@ function renderizarLista(dados) {
         <i class="fa-solid fa-location-dot" style="color: #00b894;"></i> <b>${projeto['Unidade']}</b> &nbsp;|&nbsp; 
         <i class="fa-solid fa-book" style="color: #0984e3;"></i> ${projeto['Área']} &nbsp;|&nbsp; 
         <i class="fa-solid fa-user" style="color: #6c5ce7;"></i> Coordenador: ${projeto['Coordenador']}
+        <i class="fa-solid fa-folder" style="color: #6c5ce7;"></i> Processo SEI: ${projeto['Processo SEI']}
+
       </small>
     `;
 
