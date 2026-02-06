@@ -7757,7 +7757,7 @@ const projetosIFNMG =[
   },
   {
     "Título do Projeto": "DESENVOLVIMENTO E AVALIAÇÃO DE DOCE DE BANANA (Musa acuminata) COM E SEM CASCA SEM ADIÇÃO DE AÇÚCAR.",
-    "Área": "Inteterdisciplinar",
+    "Área": "Interdisciplinar",
     "Unidade": "Salinas",
     "Coordenador": "Alexandre Santos de Souza",
     "E-mail": "alexandre.santos@ifnmg.edu.br",
