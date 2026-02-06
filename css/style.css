@@ -1379,7 +1379,6 @@ body {
 h2 {
     font-size: 1.6rem;
     color: #1b5e20;
-    position: relative;
     font-weight: bold;
 }
 
@@ -1402,6 +1401,6 @@ h2::after {
     padding: 8px 16px;
     border-radius: 20px;
     border: 1px solid #c8e6c9;
-    margin-bottom: 20px;
+    margin-top: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
