@@ -76,7 +76,7 @@
 
         <div class="row">
             <div id="dados">
-                <h1 class="sub-title">Projetos depesquisa e iniciação científica</h1>
+                <h1 class="sub-title">Projetos de pesquisa e iniciação científica</h1>
                 <p id="bloco-descricao-dados">Os projetos de pesquisa desenvolvidos no IFNMG têm possibilitado a atuação
                     de pesquisadores no desenvolvimento de conhecimento e inovação, em âmbito local e regional, assim
                     como de estudantes na iniciação
@@ -88,11 +88,11 @@
                     <canvas id="graficoUnidades"></canvas>
                 </div>
 
-                <h1 class="sub-title" style="margin-top: 90px;">Visualização de Dados dos Projetos</h1>
+                <h1 class="sub-title" style="margin-top: 110px;">Visualização de Dados dos Projetos</h1>
                 <p id="bloco-descricao-dados">
                     Explore os projetos de pesquisa cadastrados no IFNMG. Utilize a barra abaixo para buscar por
-                    coordenador, título ou área do conhecimento. Os gráficos se atualizarão automaticamente conforme a
-                    sua pesquisa.
+                    coordenador, título ou área do conhecimento, ou use o filtro de Campus para ver  os gráficos, eles atualizarão automaticamente conforme a
+                    sua escolha.
                 </p>
                 <select id="selectUnidade" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;     margin-top: 30px;
 "></select>
@@ -104,14 +104,15 @@
                     <p class="tab-links" onclick="opentab('VisaoGeral')">Graficos Tipo de Pesquisa e por Ano</p>
                     <p class="tab-links" onclick="opentab('AreasConhecimento')">Graficos por Áreas e Coordenadores</p>
                 </div>
-                <div class="tab-contents active-tab" id="ListaProjetos">
+                <div class="tab-contents active-tab" id="ListaProjetos" style="padding: 15px;">
                     <h2 style="margin-top: 60px;">Pesquisar</h2>
                     <div style="margin: 20px 0;">
                         <input type="text" id="barraPesquisa"
                             placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
                             style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
+                                                <p id="contadorProjetos">Mostrando 1000 projetos.</p>
+
                     </div>
-                    <p id="contadorProjetos">Mostrando 1000 projetos.</p>
                     <div id="containerLista"
                         style="max-height: 800px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px;">
                     </div>
