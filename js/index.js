@@ -22,16 +22,16 @@ const selectUnidade = document.getElementById('selectUnidade');
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, graficoCoordenadores;
 
 const paletaCores = [
-  '#00b894', 
-  '#0984e3', 
-  '#6c5ce7', 
-  '#e17055', 
-  '#fdcb6e', 
-  '#00cec9', 
-  '#d63031', 
-  '#e84393', 
-  '#2d3436', 
-  '#636e72'  
+  '#00b894',
+  '#0984e3',
+  '#6c5ce7',
+  '#e17055',
+  '#fdcb6e',
+  '#00cec9',
+  '#d63031',
+  '#e84393',
+  '#2d3436',
+  '#636e72'
 ];
 
 function contarOcorrencias(dados, chave) {
@@ -55,14 +55,14 @@ function contarProjetosPorAno(dados) {
         let ano;
 
         if (!isNaN(dataString) && dataString.length === 4) {
-             ano = parseInt(dataString);
-        } 
+          ano = parseInt(dataString);
+        }
         else if (dataString.includes('/')) {
-             const partes = dataString.split('/');
-             if (partes.length === 3) ano = parseInt(partes[2]);
+          const partes = dataString.split('/');
+          if (partes.length === 3) ano = parseInt(partes[2]);
         }
         else {
-             ano = new Date(dataString).getFullYear();
+          ano = new Date(dataString).getFullYear();
         }
 
         if (!isNaN(ano) && ano > 2000 && ano < 2100) {
@@ -98,11 +98,11 @@ function renderizarLista(dados) {
     const div = document.createElement('div');
     div.style.padding = '15px';
     div.style.marginBottom = '12px';
-    div.style.backgroundColor = '#ffffff'; 
+    div.style.backgroundColor = '#ffffff';
     div.style.borderRadius = '8px';
-    div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; 
-    div.style.borderLeft = '5px solid #00b894'; 
-    div.style.transition = 'transform 0.2s'; 
+    div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+    div.style.borderLeft = '5px solid #00b894';
+    div.style.transition = 'transform 0.2s';
     div.innerHTML = `
       <strong style="color: #2d3436; font-size: 1.1em; display: block; margin-bottom: 8px;">
         ${projeto['Título do Projeto']}
@@ -132,8 +132,8 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
 
   const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
   const top20Coordenadores = Object.entries(contagemCoordenadores)
-    .sort((a, b) => b[1] - a[1]) 
-    .slice(0, 20); 
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20);
 
   const labelsCoordenadores = top20Coordenadores.map(item => item[0]);
   const valoresCoordenadores = top20Coordenadores.map(item => item[1]);
@@ -240,13 +240,13 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
           grid: { display: false },
           ticks: { font: { size: 12 } }
         },
-        y: { 
-          beginAtZero: true, 
+        y: {
+          beginAtZero: true,
           grid: { color: '#f1f2f6' },
-          ticks: { 
+          ticks: {
             stepSize: 50,
             font: { size: 12 }
-          } 
+          }
         }
       }
     }
@@ -259,12 +259,12 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       datasets: [{
         label: 'Total de Projetos',
         data: valoresCoordenadores,
-        backgroundColor: '#6c5ce7', 
+        backgroundColor: '#6c5ce7',
         borderRadius: 4
       }]
     },
     options: {
-      indexAxis: 'y', 
+      indexAxis: 'y',
       scales: {
         x: { beginAtZero: true, ticks: { stepSize: 1 } }
       },
@@ -292,9 +292,9 @@ function aplicarFiltros() {
     return (projeto['Título do Projeto'] && projeto['Título do Projeto'].toLowerCase().includes(termo)) ||
       (projeto['Coordenador'] && projeto['Coordenador'].toLowerCase().includes(termo)) ||
       (projeto['Área'] && projeto['Área'].toLowerCase().includes(termo));
-  }); 
-  
-  atualizarGraficos(dadosParaGraficos, projetosIFNMG); 
+  });
+
+  atualizarGraficos(dadosParaGraficos, projetosIFNMG);
   renderizarLista(dadosParaLista);
 }
 
@@ -334,5 +334,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const originalWidth = originalList.offsetWidth + gap;
 
     innerContainer.style.setProperty("--scroll-distance", `${originalWidth}px`);
+  }
+}); function toggleMenu() {
+  const sidebar = document.getElementById('sidemenu');
+  sidebar.classList.toggle('active');
+}
+
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidemenu');
+  const toggleBtn = document.querySelector('.menu-toggle');
+
+  if (sidebar && toggleBtn) {
+    if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target) && sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+    }
   }
 });
