@@ -1,59 +1,48 @@
-# Portfólio de Projetos de Inovação | Hub IFNMG - Campus Salinas
+# Dashboard de Inovação e Pesquisa | IFNMG - Campus Salinas
 
 ![Status](https://img.shields.io/badge/status-ativo-success)
-![Instituição](https://img.shields.io/badge/instituição-IFNMG-blue)
-![Licença](https://img.shields.io/badge/license-CC--BY--NC--SA%204.0-lightgrey)
+![Tecnologia](https://img.shields.io/badge/tech-HTML5%20%7C%20CSS3%20%7C%20JS-yellow)
+![Dados](https://img.shields.io/badge/projetos-1000%2B-blueviolet)
+![Licença](https://img.shields.io/badge/license-MIT-lightgrey)
 
-Este repositório funciona como a vitrine digital e o catálogo dinâmico dos projetos de pesquisa aplicada, inovação e extensão tecnológica desenvolvidos no âmbito do **Hub de Inovação do Instituto Federal do Norte de Minas Gerais - Campus Salinas**.
+Este repositório contém o código-fonte do **Dashboard de Inovação**, uma ferramenta visual desenvolvida para centralizar, analisar e democratizar o acesso aos dados da produção científica, tecnológica e de extensão do **Instituto Federal do Norte de Minas Gerais - Campus Salinas**.
 
-Nosso principal objetivo é ser a ponte entre o conhecimento científico gerado na academia e as necessidades práticas de empresas, empresários e produtores do Norte de Minas, fomentando o desenvolvimento regional por meio da inovação.
+O sistema processa uma base de dados histórica (2013-2025), transformando centenas de registros de projetos em gráficos interativos e indicadores estratégicos para tomada de decisão.
 
-## 🎯 Objetivo do Portfólio
+## 🎯 Objetivo do Dashboard
 
-* **Apresentar** de forma clara e organizada as competências e tecnologias desenvolvidas no IFNMG - Campus Salinas.
-* **Facilitar** a conexão entre os desafios do mercado e as soluções científicas disponíveis.
-* **Fomentar** a cultura da inovação e da parceria Universidade-Empresa na região.
-* **Servir** como uma ferramenta de consulta para potenciais parceiros, investidores e para a comunidade em geral.
+* **Centralizar** o acervo acadêmico do campus em uma interface única, amigável e responsiva.
+* **Monitorar** a evolução da produção científica através de indicadores visuais (evolução anual, áreas do conhecimento, etc.).
+* **Reconhecer** o trabalho dos pesquisadores, destacando os coordenadores e áreas com maior produtividade.
+* **Facilitar** a busca por projetos específicos através de filtros inteligentes por nome, área ou coordenador.
 
-## 🔬 Áreas de Foco
+## 📊 Funcionalidades e Insights
 
-Nossas áreas prioritárias de atuação estão alinhadas com os arranjos produtivos locais, com destaque para:
+O painel oferece uma visão macro e micro dos dados institucionais:
 
-* **Tecnologia em Cachaça e Derivados**
-* **Nutrição Animal e Zootecnia de Precisão**
+* **📈 Evolução Temporal:** Gráfico de linha demonstrando o volume de projetos iniciados ano a ano.
+* **🧠 Áreas do Conhecimento:** Gráfico de barras categorizando projetos por grandes áreas (Agrárias, Exatas, Humanas, etc.).
+* **🏆 Top Coordenadores:** Ranking visual dos pesquisadores com maior volume de projetos registrados.
+* **🎓 Nível de Formação:** Distribuição dos pesquisadores por titulação (Doutorado, Mestrado, Especialização).
+* **🔍 Busca Ativa:** Lista de projetos com filtro em tempo real e cartões detalhados.
 
-Além do foco principal, estamos de portas abertas para desenvolver projetos e parcerias em outras áreas estratégicas, como:
-* Fruticultura e Agroindústria
-* Energias Renováveis Aplicadas ao Campo
-* Gestão Hídrica e Agricultura de Precisão
-* Apicultura e Derivados
-* Turismo Tecnológico e Cultural
+## 🛠️ Tecnologias Utilizadas
 
-## 📂 Como Navegar nos Projetos
+O projeto foi construído focado em leveza e performance, sem necessidade de frameworks pesados:
 
-Os projetos estão organizados em diretórios por área de atuação dentro da pasta `/projetos`.
+* **HTML5 & CSS3:** Estrutura semântica e layout responsivo (Grid/Flexbox).
+* **JavaScript (Vanilla):** Lógica de manipulação do DOM e filtros de busca.
+* **Chart.js:** Biblioteca para renderização dos gráficos interativos.
+* **FontAwesome:** Ícones vetoriais para interface.
 
-Cada projeto possui seu próprio arquivo `README.md` com informações detalhadas, incluindo:
-* Resumo do Projeto
-* Problema que Resolve
-* Estágio de Desenvolvimento (Ex: Ideia, Protótipo, Produto Final)
-* Pesquisadores Envolvidos
-* Modelo de Parceria Buscado
+## 📂 Estrutura do Projeto
 
-## 🤝 Como Contribuir ou Sugerir um Projeto
-
-Este é um portfólio vivo e em constante atualização.
-
-* **Pesquisadores do IFNMG:** Se você tem um projeto com potencial de inovação e quer incluí-lo no portfólio, entre em contato conosco ou abra uma "Issue" neste repositório descrevendo a sua proposta.
-* **Empresas e Produtores:** Se você tem um desafio ou um problema e acredita que a ciência pode ajudar, nos envie sua demanda! Podemos conectar seu desafio a um pesquisador capaz de desenvolver uma solução.
-
-## ✉️ Contato
-
-Para mais informações, parcerias ou dúvidas, entre em contato com o Hub de Inovação do IFNMG - Campus Salinas.
-
-* **Agente de Inovação Local:** [Seu Nome]
-* **E-mail:** [Seu e-mail profissional ou do Hub]
-* **Website:** [Link para o site do IFNMG ou do Hub, se houver]
-
----
-O conteúdo textual deste portfólio está licenciado sob a [Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+```text
+/
+├── index.html          # Estrutura principal do dashboard
+├── css/
+│   └── style2.css      # Estilização, temas e responsividade
+├── js/
+│   ├── dados.js        # Base de dados (JSON/Array de projetos)
+│   └── index.js        # Lógica de renderização dos gráficos e busca
+└── images/             # Logos e assets visuais

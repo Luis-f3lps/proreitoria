@@ -350,3 +350,17 @@ document.addEventListener('click', function (event) {
     }
   }
 });
+const navItems = document.querySelectorAll('.nav-links li');
+
+navItems.forEach(item => {
+    item.addEventListener('click', function() {
+        navItems.forEach(nav => nav.classList.remove('active'));
+
+        this.classList.add('active');
+        
+        if (window.innerWidth <= 768) {
+            const sidebar = document.getElementById('sidemenu');
+            if (sidebar) sidebar.classList.remove('active');
+        }
+    });
+});
