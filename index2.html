@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inovação Dashboard - IFNMG</title>
     <link rel="stylesheet" href="css/style2.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://kit.fontawesome.com/915b45d802.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -19,9 +19,7 @@
             <ul class="nav-links">
                 <li class="active"><a href="#"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
                 <li><a href="#"><i class="fas fa-chart-line"></i> <span>Gráficos</span></a></li>
-                <li><a href="#"><i class="fas fa-file-alt"></i> <span>Relatórios</span></a></li>
                 <li><a href="#"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
             </ul>
             <div class="signout">
                 <a href="#">SAIR</a>
@@ -31,71 +29,40 @@
         <main class="main-content">
             <header class="top-header">
                 <div class="header-left">
-                    <div class="breadcrumb"><i class="fas fa-home"></i> / Dashboard / Projetos</div>
-                    <p id="contadorProjetos" style="font-weight: bold; color: #4caf50;">Carregando projetos...</p>
+                    <div class="breadcrumb"><i class="fas fa-home"></i> / Dashboard</div>
+                    <p id="contadorProjetos">Carregando...</p>
                 </div>
                 
-                <div class="search-bar">
-                    <input type="text" id="barraPesquisa" placeholder="Pesquisar projeto, área ou coordenador...">
-                    <i class="fas fa-search"></i>
+                <div class="header-right" style="display: flex; gap: 10px;">
+                    <select id="selectUnidade" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                        <option value="">Todas as Unidades</option>
+                    </select>
+                    
+                    <div class="search-bar">
+                        <input type="text" id="barraPesquisa" placeholder="Pesquisar...">
+                        <i class="fas fa-search"></i>
+                    </div>
                 </div>
             </header>
 
             <section class="dashboard-grid">
-                
                 <div class="card wide">
-                    <h3><i class="fas fa-list"></i> Lista de Projetos Recentes</h3>
-                    <div id="containerListaProjetos" style="max-height: 300px; overflow-y: auto; margin-top: 15px; border: 1px solid #eee; padding: 10px; border-radius: 5px;">
+                    <h3><i class="fas fa-list"></i> Lista de Projetos</h3>
+                    <div id="containerLista" style="max-height: 300px; overflow-y: auto; margin-top: 15px; background: #fff;">
                         </div>
                 </div>
 
-                <div class="card">
-                    <h3>Evolução por Ano</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoAno"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Projetos por Área</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoAreas"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Distribuição por Unidade</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoUnidades"></canvas>
-                    </div>
-                </div>
-
-                <div class="card wide">
-                    <h3>Top 20 Coordenadores</h3>
-                    <div class="chart-container" style="height: 400px;">
-                        <canvas id="graficoCoordenadores"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Tipo de Pesquisa</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoTipos"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Nível de Formação</h3>
-                    <div class="chart-container">
-                        <canvas id="graficoFormacao"></canvas>
-                    </div>
-                </div>
-
+                <div class="card"><canvas id="graficoAno"></canvas></div>
+                <div class="card"><canvas id="graficoAreas"></canvas></div>
+                <div class="card"><canvas id="graficoUnidades"></canvas></div>
+                <div class="card wide"><canvas id="graficoCoordenadores"></canvas></div>
+                <div class="card"><canvas id="graficoTipos"></canvas></div>
+                <div class="card"><canvas id="graficoFormacao"></canvas></div>
             </section>
         </main>
     </div>
 
     <script src="js/dados.js"></script>
     <script src="js/index.js"></script>
-  </body>
+</body>
 </html>
