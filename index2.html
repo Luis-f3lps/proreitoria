@@ -1,174 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inovação Dashboard</title>
+    <title>Inovação Dashboard - IFNMG</title>
     <link rel="stylesheet" href="css/style2.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-  <body>
+<body>
     <div class="container">
-      <nav class="sidebar">
-        <div class="logo">
-          <div class="logo-box"></div>
-          <span>LOGO</span>
-        </div>
-        <ul class="nav-links">
-          <li class="active">
-            <a href="#"
-              ><i class="fas fa-th-large"></i> <span>Dashboard</span></a
-            >
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-chart-line"></i> <span>Chart</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-file-alt"></i> <span>Form</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-envelope"></i> <span>Email</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-user"></i> <span>Perfil</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
-          </li>
-        </ul>
-        <div class="signout">
-          <a href="#">SIGN OUT</a>
-        </div>
-      </nav>
+        <nav class="sidebar" id="sidemenu">
+            <div class="logo">
+                <div class="logo-box"></div>
+                <span>INOVAÇÃO</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> <span>Gráficos</span></a></li>
+                <li><a href="#"><i class="fas fa-file-alt"></i> <span>Relatórios</span></a></li>
+                <li><a href="#"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> <span>Configurações</span></a></li>
+            </ul>
+            <div class="signout">
+                <a href="#">SAIR</a>
+            </div>
+        </nav>
 
-      <div
-        id="containerLista"
-        style="
-          max-height: 800px;
-          overflow-y: auto;
-          background: #f9f9f9;
-          padding: 15px;
-          border-radius: 8px;
-        "
-      ></div>
-      <main class="main-content">
-        <header class="top-header">
-          <div class="breadcrumb"><i class="fas fa-home"></i> / Dashboard</div>
-          <div class="search-bar">
-            <input
-              type="text"
-              id="barraPesquisa"
-              placeholder="🔍 Pesquisar por projeto, área ou coordenador..."
-              style="
-                width: 100%;
-                padding: 15px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                font-size: 16px;
-              "
-            />
-            <i class="fas fa-search"></i>
-          </div>
-          <p id="contadorProjetos">Mostrando 1000 projetos.</p>
-        </header>
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="breadcrumb"><i class="fas fa-home"></i> / Dashboard / Projetos</div>
+                    <p id="contadorProjetos" style="font-weight: bold; color: #4caf50;">Carregando projetos...</p>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" id="barraPesquisa" placeholder="Pesquisar projeto, área ou coordenador...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </header>
 
-        <section class="dashboard-grid">
-          <div class="card wide">
-            <h3>Line Chart</h3>
-            <div
-              id="containerLista"
-              style="
-                max-height: 800px;
-                overflow-y: auto;
-                background: #f9f9f9;
-                padding: 15px;
-                border-radius: 8px;
-              "
-            ></div>
-            <div class="placeholder-chart"></div>
-          </div>
-          <canvas id="graficoUnidades"></canvas>
+            <section class="dashboard-grid">
+                
+                <div class="card wide">
+                    <h3><i class="fas fa-list"></i> Lista de Projetos Recentes</h3>
+                    <div id="containerListaProjetos" style="max-height: 300px; overflow-y: auto; margin-top: 15px; border: 1px solid #eee; padding: 10px; border-radius: 5px;">
+                        </div>
+                </div>
 
-          <div class="card">
-            <h3>Stats 1</h3>
-            <div class="circle-chart">65%</div>
-            <div class="chart-container-linhas">
-              <h2>Evolução de Projetos por Ano (Início)</h2>
-              <canvas id="graficoAno"></canvas>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Stats 2</h3>
-            <div class="placeholder-chart small"></div>
-            <div class="chart-container-linhas">
-              <h2>Projetos por Área do Conhecimento</h2>
-              <canvas id="graficoAreas"></canvas>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Stats 3</h3>
-            <div class="chart-container-linhas">
-              <h2>Top 20 Coordenadores com Mais Projetos</h2>
-              <canvas id="graficoCoordenadores"></canvas>
-            </div>
-            <div class="placeholder-chart small"></div>
-          </div>
-          <div class="card">
-            <h3>Stats 1</h3>
-            <div class="circle-chart">65%</div>
-            <div class="chart-container-linhas">
-              <h2>Evolução de Projetos por Ano (Início)</h2>
-              <canvas id="graficoAno"></canvas>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Stats 2</h3>
-            <div class="placeholder-chart small"></div>
-            <div class="chart-container">
-              <h3>Tipo de Pesquisa</h3>
-              <canvas id="graficoTipos"></canvas>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Stats 3</h3>
-            <
-            <div class="chart-container">
-              <h3>Nível de Formação</h3>
-              <canvas id="graficoFormacao"></canvas>
-            </div>
-            <div class="placeholder-chart small"></div>
-          </div>
-        </section>
-      </main>
+                <div class="card">
+                    <h3>Evolução por Ano</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoAno"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Projetos por Área</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoAreas"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Distribuição por Unidade</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoUnidades"></canvas>
+                    </div>
+                </div>
+
+                <div class="card wide">
+                    <h3>Top 20 Coordenadores</h3>
+                    <div class="chart-container" style="height: 400px;">
+                        <canvas id="graficoCoordenadores"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Tipo de Pesquisa</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoTipos"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Nível de Formação</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoFormacao"></canvas>
+                    </div>
+                </div>
+
+            </section>
+        </main>
     </div>
-
-    <script>
-      var sidemenu = document.getElementById("sidemenu");
-      function openmenu() {
-        sidemenu.style.left = "0px";
-      }
-      function clossmenu() {
-        sidemenu.style.left = "-800px";
-      }
-
-      // Script para trocar as abas
-      function opentab(tabName) {
-        var tablinks = document.getElementsByClassName("tab-links");
-        var tabcontents = document.getElementsByClassName("tab-contents");
-        for (tablink of tablinks) {
-          tablink.classList.remove("active-link");
-        }
-        for (tabcontent of tabcontents) {
-          tabcontent.classList.remove("active-tab");
-        }
-        event.currentTarget.classList.add("active-link");
-        document.getElementById(tabName).classList.add("active-tab");
-      }
-    </script>
 
     <script src="js/dados.js"></script>
     <script src="js/index.js"></script>
