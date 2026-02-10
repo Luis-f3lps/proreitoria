@@ -99,7 +99,7 @@ body {
     padding: 15px 25px;
     margin-bottom: 25px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .header-right {
@@ -145,7 +145,7 @@ body {
     background: var(--white);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
 }
@@ -190,9 +190,12 @@ body {
     .sidebar {
         width: 80px;
     }
-    .sidebar span, .logo span {
+
+    .sidebar span,
+    .logo span {
         display: none;
     }
+
     .main-content {
         width: calc(100% - 80px);
     }
@@ -202,10 +205,13 @@ body {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
+
     .card.wide {
         grid-column: span 1;
     }
-}.menu-toggle {
+}
+
+.menu-toggle {
     display: none;
 }
 
@@ -228,7 +234,7 @@ body {
         border-radius: 5px;
         z-index: 2000;
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .sidebar {
@@ -239,7 +245,7 @@ body {
         height: 100vh;
         z-index: 1000;
         transition: all 0.3s ease;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .sidebar.active {
@@ -281,6 +287,19 @@ body {
     .search-bar {
         width: 100%;
     }
-}html {
+
+    #selectUnidade {
+        margin-right: 0px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .chart-container {
+
+        min-height: 00px;
+    }
+}
+
+html {
     scroll-behavior: smooth;
 }
