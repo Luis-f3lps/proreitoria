@@ -124,6 +124,9 @@ function renderizarLista(dados) {
 }
 
 function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
+  // Movido para dentro da função para ser recalculado sempre que os gráficos atualizarem
+  const isMobile = window.innerWidth <= 768;
+
   const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
   const contagemTipos = contarOcorrencias(dadosCompletos, 'Tipo');
   const contagemFormacao = contarOcorrencias(dadosCompletos, 'Formação');
@@ -133,6 +136,10 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
   const todosCoordenadoresOrdenados = Object.entries(contagemCoordenadores)
     .sort((a, b) => b[1] - a[1]);
+
+  let labelsCoordenadores = [];
+  let valoresCoordenadores = [];
+
   if (isMobile) {
     const top10 = todosCoordenadoresOrdenados.slice(0, 10);
     const outros = todosCoordenadoresOrdenados.slice(10);
@@ -145,16 +152,11 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
       labelsCoordenadores.push('Outros');
       valoresCoordenadores.push(somaOutros);
     }
-  }
-  else {
+  } else {
     const top20 = todosCoordenadoresOrdenados.slice(0, 20);
     labelsCoordenadores = top20.map(item => item[0]);
     valoresCoordenadores = top20.map(item => item[1]);
   }
-
-  if (graficoCoordenadores) graficoCoordenadores.destroy();
-  let labelsCoordenadores = [];
-  let valoresCoordenadores = [];
 
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
@@ -226,7 +228,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   });
 
   graficoAreas = new Chart(document.getElementById('graficoAreas'), {
-    type: isMobile ? 'pie' : 'bar', // Pizza no celular, Barra no PC
+    type: isMobile ? 'pie' : 'bar',
     data: {
       labels: Object.keys(contagemAreas),
       datasets: [{
