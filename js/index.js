@@ -13,7 +13,7 @@ function opentab(tabname) {
   }
   event.currentTarget.classList.add("active-link");
 }
-
+const isMobile = window.innerWidth <= 768;
 const inputPesquisa = document.getElementById('barraPesquisa');
 const containerLista = document.getElementById('containerLista');
 const contadorProjetos = document.getElementById('contadorProjetos');
@@ -131,12 +131,30 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   const dadosAno = contarProjetosPorAno(dadosCompletos);
 
   const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
-  const top20Coordenadores = Object.entries(contagemCoordenadores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 20);
+  const todosCoordenadoresOrdenados = Object.entries(contagemCoordenadores)
+    .sort((a, b) => b[1] - a[1]);
+  if (isMobile) {
+    const top10 = todosCoordenadoresOrdenados.slice(0, 10);
+    const outros = todosCoordenadoresOrdenados.slice(10);
+    const somaOutros = outros.reduce((acc, atual) => acc + atual[1], 0);
 
-  const labelsCoordenadores = top20Coordenadores.map(item => item[0]);
-  const valoresCoordenadores = top20Coordenadores.map(item => item[1]);
+    labelsCoordenadores = top10.map(item => item[0]);
+    valoresCoordenadores = top10.map(item => item[1]);
+
+    if (somaOutros > 0) {
+      labelsCoordenadores.push('Outros');
+      valoresCoordenadores.push(somaOutros);
+    }
+  }
+  else {
+    const top20 = todosCoordenadoresOrdenados.slice(0, 20);
+    labelsCoordenadores = top20.map(item => item[0]);
+    valoresCoordenadores = top20.map(item => item[1]);
+  }
+
+  if (graficoCoordenadores) graficoCoordenadores.destroy();
+  let labelsCoordenadores = [];
+  let valoresCoordenadores = [];
 
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
@@ -146,15 +164,26 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   if (graficoCoordenadores) graficoCoordenadores.destroy();
 
   graficoUnidades = new Chart(document.getElementById('graficoUnidades'), {
-    type: 'bar',
+    type: isMobile ? 'pie' : 'bar',
     data: {
       labels: Object.keys(contagemUnidades),
       datasets: [{
         label: 'Projetos',
         data: Object.values(contagemUnidades),
-        backgroundColor: '#00b894',
-        borderRadius: 4
+        backgroundColor: isMobile ? paletaCores : '#00b894',
+        borderWidth: isMobile ? 0 : 1,
+        borderRadius: isMobile ? 0 : 4
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: isMobile,
+          position: 'bottom'
+        }
+      }
     }
   });
 
@@ -197,17 +226,28 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   });
 
   graficoAreas = new Chart(document.getElementById('graficoAreas'), {
-    type: 'bar',
+    type: isMobile ? 'pie' : 'bar', // Pizza no celular, Barra no PC
     data: {
       labels: Object.keys(contagemAreas),
       datasets: [{
         label: 'Projetos',
         data: Object.values(contagemAreas),
-        backgroundColor: '#e17055',
-        borderRadius: 4
+        backgroundColor: isMobile ? paletaCores : '#e17055',
+        borderWidth: isMobile ? 0 : 1,
+        borderRadius: isMobile ? 0 : 4
       }]
     },
-    options: { indexAxis: 'y' }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: isMobile ? 'x' : 'y',
+      plugins: {
+        legend: {
+          display: isMobile,
+          position: 'bottom'
+        }
+      }
+    }
   });
 
   graficoAno = new Chart(document.getElementById('graficoAno'), {
@@ -253,23 +293,30 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   });
 
   graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
-    type: 'bar',
+    type: isMobile ? 'pie' : 'bar',
     data: {
       labels: labelsCoordenadores,
       datasets: [{
         label: 'Total de Projetos',
         data: valoresCoordenadores,
-        backgroundColor: '#6c5ce7',
-        borderRadius: 4
+        backgroundColor: isMobile ? paletaCores : '#6c5ce7',
+        borderWidth: isMobile ? 0 : 1,
+        borderRadius: isMobile ? 0 : 4
       }]
     },
     options: {
-      indexAxis: 'y',
-      scales: {
-        x: { beginAtZero: true, ticks: { stepSize: 1 } }
-      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: isMobile ? 'x' : 'y',
       plugins: {
-        legend: { display: false }
+        legend: {
+          display: isMobile,
+          position: 'bottom'
+        }
+      },
+      scales: isMobile ? {} : {
+        x: { beginAtZero: true, ticks: { stepSize: 1 } },
+        y: { grid: { display: false } }
       }
     }
   });
@@ -353,14 +400,14 @@ document.addEventListener('click', function (event) {
 const navItems = document.querySelectorAll('.nav-links li');
 
 navItems.forEach(item => {
-    item.addEventListener('click', function() {
-        navItems.forEach(nav => nav.classList.remove('active'));
+  item.addEventListener('click', function () {
+    navItems.forEach(nav => nav.classList.remove('active'));
 
-        this.classList.add('active');
-        
-        if (window.innerWidth <= 768) {
-            const sidebar = document.getElementById('sidemenu');
-            if (sidebar) sidebar.classList.remove('active');
-        }
-    });
+    this.classList.add('active');
+
+    if (window.innerWidth <= 768) {
+      const sidebar = document.getElementById('sidemenu');
+      if (sidebar) sidebar.classList.remove('active');
+    }
+  });
 });
