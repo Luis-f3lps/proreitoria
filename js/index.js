@@ -25,7 +25,8 @@ const paletaCores = [
   '#00b894', '#0984e3', '#6c5ce7', '#e17055', '#fdcb6e',
   '#00cec9', '#d63031', '#e84393',
   '#1abc9c', 
-  '#ff9f43'  
+  '#ff9f43',   '#1c5f52ff', 
+  '#6ac579ff'   
 ];
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
