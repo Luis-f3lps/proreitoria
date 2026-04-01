@@ -22,18 +22,11 @@ const selectUnidade = document.getElementById('selectUnidade');
 let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, graficoCoordenadores;
 
 const paletaCores = [
-  '#00b894',
-  '#0984e3',
-  '#6c5ce7',
-  '#e17055',
-  '#fdcb6e',
-  '#00cec9',
-  '#d63031',
-  '#e84393',
-  '#2d3436',
-  '#636e72'
+  '#00b894', '#0984e3', '#6c5ce7', '#e17055', '#fdcb6e',
+  '#00cec9', '#d63031', '#e84393',
+  '#1abc9c', 
+  '#ff9f43'  
 ];
-
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
