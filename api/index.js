@@ -70,7 +70,9 @@ app.post('/api/login', async (req, res) => {
 app.get('/',  (req, res) => {
     res.sendFile(path.join(process.cwd(), 'views', 'index.html'));
 });
-
+app.get('/login',  (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'login.html'));
+});
 app.get('/admin', Autenticado, (req, res) => {
     res.sendFile(path.join(process.cwd(), 'views', 'admin.html'));
 });
