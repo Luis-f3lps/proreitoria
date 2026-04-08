@@ -23,13 +23,13 @@ function Autenticado(req, res, next) {
         if (req.originalUrl.startsWith('/api')) {
             return res.status(401).json({ error: "Não autorizado" });
         }
-        return res.redirect('/login.html'); // Sem crachá? Volta pro login!
+        return res.redirect('/login.html'); 
     }
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.session = { user: decoded };
-        next(); // Pode passar!
+        next(); 
     } catch (err) {
         res.clearCookie('token');
         return res.redirect('/login.html');
@@ -66,17 +66,15 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// ==========================================
-// 3. ROTA DA PÁGINA HTML PROTEGIDA
-// ==========================================
+
+app.get('/',  (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'views', 'index.html'));
+});
+
 app.get('/admin', Autenticado, (req, res) => {
-    // process.cwd() aponta para a raiz do projeto na Vercel
     res.sendFile(path.join(process.cwd(), 'views', 'admin.html'));
 });
 
-// ==========================================
-// 4. ROTAS DA API DE PROJETOS
-// ==========================================
 app.get('/api/projetos', Autenticado, async (req, res) => {
     try {
         const projetos = await sql`SELECT * FROM projetos ORDER BY id DESC`;
@@ -146,5 +144,5 @@ app.get('/api/logout', (req, res) => {
     res.clearCookie('token', { path: '/' });
     res.json({ message: 'Logout efetuado com sucesso' });
 });
-// O MAIOR SEGREDO DA VERCEL: Não use app.listen(). Exporte o app!
+
 export default app;
