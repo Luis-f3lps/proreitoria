@@ -24,9 +24,9 @@ let graficoUnidades, graficoTipos, graficoFormacao, graficoAreas, graficoAno, gr
 const paletaCores = [
   '#00b894', '#0984e3', '#6c5ce7', '#e17055', '#fdcb6e',
   '#00cec9', '#d63031', '#e84393',
-  '#1abc9c', 
-  '#ff9f43',   '#1c5f52ff', 
-  '#6ac579ff'   
+  '#1abc9c',
+  '#ff9f43', '#1c5f52ff',
+  '#6ac579ff'
 ];
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
@@ -348,23 +348,28 @@ let projetosIFNMG = [];
 async function buscarProjetosDoBanco() {
   try {
     contadorProjetos.innerText = "Conectando ao banco de dados...";
-    
+
     const resposta = await fetch('/api/projetos');
     const dadosDoBanco = await resposta.json();
-    
+
     projetosIFNMG = dadosDoBanco.map(projeto => ({
+      id: projeto.id,
       "Título do Projeto": projeto.titulo,
       "Área": projeto.area,
       "Unidade": projeto.unidade,
       "Coordenador": projeto.coordenador,
+      "E-mail": projeto.email,
       "Tipo": projeto.tipo,
+      "Formação": projeto.formacao,
+      "Carreira": projeto.carreira,
       "Vigência (Início)": projeto.vigencia_inicio,
+      "Vigência (Término)": projeto.vigencia_termino,
       "Processo SEI": projeto.processo_sei,
-      "Formação": "Não Informada" 
+      "Ética e Segurança": projeto.etica_seguranca
     }));
 
-    inicializarDashboard(); 
-    
+    inicializarDashboard();
+
   } catch (erro) {
     console.error("Erro ao carregar dados do banco:", erro);
     contadorProjetos.innerText = "Erro ao carregar projetos. Verifique o console.";
