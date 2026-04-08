@@ -4,7 +4,8 @@ document.getElementById('login-form').addEventListener('submit', function (event
     const email = document.querySelector('input[name="email"]').value;
     const senha = document.querySelector('input[name="senha"]').value;
 
-    fetch('/login', {
+    // Atualizado para chamar a API Serverless
+    fetch('/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -15,13 +16,8 @@ document.getElementById('login-form').addEventListener('submit', function (event
         .then(data => {
             const errorMessage = document.getElementById('error-message');
             if (data.success) {
-                const tipoUser = data.tipo_usuario ? data.tipo_usuario.trim().toLowerCase() : '';
-                
-                if (tipoUser === 'admin' || tipoUser === 'administrador') {
-                    window.location.href = '/Inventario';
-                } else {
-                    window.location.href = '/Home';
-                }
+                // Redireciona para o admin após sucesso
+                window.location.href = '/admin.html';
             } else {
                 errorMessage.innerText = data.error;
                 errorMessage.style.display = 'block';
@@ -30,7 +26,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
         .catch(error => {
             console.error('Erro ao fazer login:', error);
             const errorMessage = document.getElementById('error-message');
-            errorMessage.innerText = 'Erro ao fazer login. Tente novamente.';
+            errorMessage.innerText = 'Erro ao se conectar ao servidor.';
             errorMessage.style.display = 'block';
         });
 });
