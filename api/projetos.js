@@ -16,13 +16,29 @@ export default async function handler(req, res) {
   // --- ADICIONAR PROJETO ---
   if (req.method === 'POST') {
     try {
-      const { titulo, area, unidade, coordenador, tipo, vigencia_inicio, processo_sei } = req.body;
+      // 1. Pegando TODAS as colunas que o seu admin.js vai enviar
+      const { 
+        titulo, area, unidade, coordenador, email, tipo, 
+        formacao, carreira, vigencia_inicio, vigencia_termino, 
+        processo_sei, etica_seguranca 
+      } = req.body;
       
-      const dataValida = vigencia_inicio ? vigencia_inicio : null;
+      // 2. Tratando as datas (se o usuário não preencher no HTML, manda NULL pro banco)
+      const dataInicio = vigencia_inicio ? vigencia_inicio : null;
+      const dataTermino = vigencia_termino ? vigencia_termino : null;
 
+      // 3. Inserindo com as 12 colunas
       await sql`
-        INSERT INTO projetos (titulo, area, unidade, coordenador, tipo, vigencia_inicio, processo_sei)
-        VALUES (${titulo}, ${area}, ${unidade}, ${coordenador}, ${tipo}, ${dataValida}, ${processo_sei})
+        INSERT INTO projetos (
+          titulo, area, unidade, coordenador, email, tipo, 
+          formacao, carreira, vigencia_inicio, vigencia_termino, 
+          processo_sei, etica_seguranca
+        )
+        VALUES (
+          ${titulo}, ${area}, ${unidade}, ${coordenador}, ${email}, ${tipo}, 
+          ${formacao}, ${carreira}, ${dataInicio}, ${dataTermino}, 
+          ${processo_sei}, ${etica_seguranca}
+        )
       `;
       
       return res.status(201).json({ message: "Projeto salvo com sucesso!" });
@@ -35,7 +51,7 @@ export default async function handler(req, res) {
   // --- APAGAR PROJETO ---
   if (req.method === 'DELETE') {
     try {
-      const { id } = req.body; // Pega o ID enviado pelo front-end
+      const { id } = req.body; 
       await sql`DELETE FROM projetos WHERE id = ${id}`;
       return res.status(200).json({ message: "Projeto apagado!" });
     } catch (error) {

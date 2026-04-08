@@ -11,7 +11,7 @@ async function carregarProjetosAdmin() {
         const dados = await resposta.json();
 
         renderizarListaAdmin(dados);
-        
+
         statusAdmin.innerText = "Sistema online e conectado.";
         statusAdmin.style.color = "#00b894";
     } catch (erro) {
@@ -65,18 +65,23 @@ function renderizarListaAdmin(projetos) {
 // --- 3. ADICIONAR NOVO PROJETO ---
 async function adicionarProjeto(event) {
     event.preventDefault();
-    
+
     const btnSalvar = document.getElementById('btnSalvar');
     const textoOriginalBtn = btnSalvar.innerHTML;
-    
+
     const novoProjeto = {
         titulo: document.getElementById('addTitulo').value,
         area: document.getElementById('addArea').value,
         unidade: document.getElementById('addUnidade').value,
         coordenador: document.getElementById('addCoordenador').value,
+        email: document.getElementById('addEmail') ? document.getElementById('addEmail').value : '',
         tipo: document.getElementById('addTipo').value,
+        formacao: document.getElementById('addFormacao') ? document.getElementById('addFormacao').value : '',
+        carreira: document.getElementById('addCarreira') ? document.getElementById('addCarreira').value : '',
         vigencia_inicio: document.getElementById('addInicio').value,
-        processo_sei: document.getElementById('addSEI').value
+        vigencia_termino: document.getElementById('addTermino') ? document.getElementById('addTermino').value : '',
+        processo_sei: document.getElementById('addSEI').value,
+        etica_seguranca: document.getElementById('addEtica') ? document.getElementById('addEtica').value : ''
     };
 
     try {
@@ -112,7 +117,7 @@ async function apagarProjeto(id, titulo) {
     if (confirm(`Atenção: Tem certeza que deseja apagar definitivamente o projeto:\n\n"${titulo}"?`)) {
         try {
             statusAdmin.innerText = "Apagando projeto...";
-            
+
             const resposta = await fetch('/api/projetos', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
