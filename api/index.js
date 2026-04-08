@@ -32,8 +32,7 @@ function Autenticado(req, res, next) {
         next(); 
     } catch (err) {
         res.clearCookie('token');
-        return res.redirect('/login.html');
-    }
+return res.redirect('/login');    }
 }
 
 // ==========================================
@@ -71,7 +70,7 @@ app.get('/',  (req, res) => {
     res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 app.get('/login',  (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
 });
 app.get('/admin', Autenticado, (req, res) => {
     res.sendFile(path.join(process.cwd(), 'views', 'admin.html'));
