@@ -142,5 +142,91 @@ function toggleMenu() {
     sidebar.classList.toggle('active');
 }
 
+// --- 5. IMPORTAR CSV ---
+async function processarCSV() {
+    const inputArquivo = document.getElementById('arquivoCSV');
+    const btnImportar = document.getElementById('btnImportar');
+    
+    if (inputArquivo.files.length === 0) {
+        alert("Por favor, selecione um arquivo CSV primeiro!");
+        return;
+    }
+
+    const arquivo = inputArquivo.files[0];
+    const reader = new FileReader();
+
+    // Quando o navegador terminar de ler o arquivo na máquina do usuário:
+    reader.onload = async function(evento) {
+        const texto = evento.target.result;
+        
+        // Quebra o texto por linhas (Enter)
+        const linhas = texto.split('\n');
+        const projetosLote = [];
+
+        // Começa do índice 1 para pular a linha do cabeçalho do CSV
+        for (let i = 1; i < linhas.length; i++) {
+            const linhaAtual = linhas[i].trim();
+            if (!linhaAtual) continue; // Pula linhas vazias
+
+            // O Excel no Brasil separa CSV por ponto e vírgula (;)
+            const colunas = linhaAtual.split(';');
+
+            // Se a linha não tiver pelo menos as colunas principais, pula
+            if (colunas.length < 4) continue; 
+
+            projetosLote.push({
+                titulo: colunas[0] ? colunas[0].trim() : '',
+                area: colunas[1] ? colunas[1].trim() : '',
+                unidade: colunas[2] ? colunas[2].trim() : '',
+                coordenador: colunas[3] ? colunas[3].trim() : '',
+                email: colunas[4] ? colunas[4].trim() : '',
+                tipo: colunas[5] ? colunas[5].trim() : '',
+                formacao: colunas[6] ? colunas[6].trim() : '',
+                carreira: colunas[7] ? colunas[7].trim() : '',
+                vigencia_inicio: colunas[8] ? colunas[8].trim() : '',
+                vigencia_termino: colunas[9] ? colunas[9].trim() : '',
+                processo_sei: colunas[10] ? colunas[10].trim() : '',
+                etica_seguranca: colunas[11] ? colunas[11].trim() : ''
+            });
+        }
+
+        if (projetosLote.length === 0) {
+            alert("Nenhum dado válido encontrado no CSV. Verifique o separador (;).");
+            return;
+        }
+
+        // Manda o pacotão pro Back-end
+        try {
+            btnImportar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inserindo no banco...';
+            btnImportar.disabled = true;
+            btnImportar.style.opacity = '0.7';
+
+            const resposta = await fetch('/api/projetos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(projetosLote) // Enviando o Array completo!
+            });
+
+            if (resposta.ok) {
+                alert(`${projetosLote.length} projetos importados com sucesso!`);
+                inputArquivo.value = ''; // Limpa o input de arquivo
+                carregarProjetosAdmin(); // Recarrega a lista na tela
+            } else {
+                alert("Erro ao importar projetos. Verifique o console.");
+            }
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro de conexão ao tentar importar.");
+        } finally {
+            btnImportar.innerHTML = '<i class="fas fa-upload"></i> Processar e Salvar no Banco';
+            btnImportar.disabled = false;
+            btnImportar.style.opacity = '1';
+        }
+    };
+
+    // Manda o FileReader ler como texto (ajuda com acentos brasileiros)
+    reader.readAsText(arquivo, 'UTF-8');
+}
+
 // Carrega os dados assim que a página abrir
 window.onload = carregarProjetosAdmin;

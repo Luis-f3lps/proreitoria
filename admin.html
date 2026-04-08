@@ -134,7 +134,25 @@
                     <div id="listaAdmin" style="margin-top: 15px;">
                     </div>
                 </div>
+                <div class="card wide" id="importar">
+                    <h3><i class="fas fa-file-csv"></i> Importar Projetos via CSV</h3>
+                    <p style="color: #636e72; font-size: 0.9em; margin-top: 10px;">
+                        Seu arquivo CSV deve ser separado por <b>ponto e vírgula ( ; )</b> e ter as colunas exatamente
+                        nesta ordem:<br>
+                        <i>Título ; Área ; Unidade ; Coordenador ; E-mail ; Tipo ; Formação ; Carreira ;
+                            Início(YYYY-MM-DD) ; Término(YYYY-MM-DD) ; SEI ; Ética</i>
+                    </p>
 
+                    <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <input type="file" id="arquivoCSV" accept=".csv"
+                            style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;">
+
+                        <button onclick="processarCSV()" id="btnImportar"
+                            style="background: #0984e3; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+                            <i class="fas fa-upload"></i> Processar e Salvar no Banco
+                        </button>
+                    </div>
+                </div>
             </section>
         </main>
     </div>

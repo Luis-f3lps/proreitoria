@@ -14,34 +14,45 @@ export default async function handler(req, res) {
   }
 
   // --- ADICIONAR PROJETO ---
+// --- ADICIONAR PROJETO(S) ---
   if (req.method === 'POST') {
     try {
-      // 1. Pegando TODAS as colunas que o seu admin.js vai enviar
-      const { 
-        titulo, area, unidade, coordenador, email, tipo, 
-        formacao, carreira, vigencia_inicio, vigencia_termino, 
-        processo_sei, etica_seguranca 
-      } = req.body;
-      
-      // 2. Tratando as datas (se o usuário não preencher no HTML, manda NULL pro banco)
-      const dataInicio = vigencia_inicio ? vigencia_inicio : null;
-      const dataTermino = vigencia_termino ? vigencia_termino : null;
+      const dados = req.body;
 
-      // 3. Inserindo com as 12 colunas
-      await sql`
-        INSERT INTO projetos (
-          titulo, area, unidade, coordenador, email, tipo, 
-          formacao, carreira, vigencia_inicio, vigencia_termino, 
-          processo_sei, etica_seguranca
-        )
-        VALUES (
-          ${titulo}, ${area}, ${unidade}, ${coordenador}, ${email}, ${tipo}, 
-          ${formacao}, ${carreira}, ${dataInicio}, ${dataTermino}, 
-          ${processo_sei}, ${etica_seguranca}
-        )
-      `;
+      // SE FOR UM ARRAY (Vindo da importação do CSV)
+      if (Array.isArray(dados)) {
+        for (const p of dados) {
+          const inicio = p.vigencia_inicio ? p.vigencia_inicio : null;
+          const termino = p.vigencia_termino ? p.vigencia_termino : null;
+
+          await sql`
+            INSERT INTO projetos (
+              titulo, area, unidade, coordenador, email, tipo, 
+              formacao, carreira, vigencia_inicio, vigencia_termino, 
+              processo_sei, etica_seguranca
+            )
+            VALUES (
+              ${p.titulo}, ${p.area}, ${p.unidade}, ${p.coordenador}, ${p.email}, ${p.tipo}, 
+              ${p.formacao}, ${p.carreira}, ${inicio}, ${termino}, 
+              ${p.processo_sei}, ${p.etica_seguranca}
+            )
+          `;
+        }
+        return res.status(201).json({ message: `${dados.length} projetos importados com sucesso!` });
+      } 
       
-      return res.status(201).json({ message: "Projeto salvo com sucesso!" });
+      // SE FOR UM OBJETO ÚNICO (Vindo do formulário manual de adicionar 1 só)
+      else {
+        const { titulo, area, unidade, coordenador, email, tipo, formacao, carreira, vigencia_inicio, vigencia_termino, processo_sei, etica_seguranca } = dados;
+        const inicio = vigencia_inicio ? vigencia_inicio : null;
+        const termino = vigencia_termino ? vigencia_termino : null;
+
+        await sql`
+          INSERT INTO projetos (titulo, area, unidade, coordenador, email, tipo, formacao, carreira, vigencia_inicio, vigencia_termino, processo_sei, etica_seguranca)
+          VALUES (${titulo}, ${area}, ${unidade}, ${coordenador}, ${email}, ${tipo}, ${formacao}, ${carreira}, ${inicio}, ${termino}, ${processo_sei}, ${etica_seguranca})
+        `;
+        return res.status(201).json({ message: "Projeto salvo com sucesso!" });
+      }
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Erro ao salvar no banco." });
