@@ -326,13 +326,17 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     } // <-- AQUI ESTAVA O ERRO (faltava fechar a chave de options)
   });
 
-  graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
+// Pega apenas os 10 primeiros da lista
+const labelsTop10 = labelsCoordenadores.slice(0, 10);
+const valoresTop10 = valoresCoordenadores.slice(0, 10);
+
+graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
     type: isMobile ? 'pie' : 'bar',
     data: {
-      labels: labelsCoordenadores,
+      labels: labelsTop10, // 🚀 Usando apenas os 10 nomes
       datasets: [{
         label: 'Total de Projetos',
-        data: valoresCoordenadores,
+        data: valoresTop10, // 🚀 Usando apenas os 10 valores
         backgroundColor: isMobile ? paletaCores : '#6c5ce7',
         borderWidth: isMobile ? 0 : 1,
         borderRadius: isMobile ? 0 : 4
@@ -349,11 +353,20 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
         }
       },
       scales: isMobile ? {} : {
-        x: { beginAtZero: true, ticks: { stepSize: 1 } },
-        y: { grid: { display: false } }
+        x: { 
+          beginAtZero: true, 
+          ticks: { stepSize: 1 } 
+        },
+        y: { 
+          grid: { display: false },
+          ticks: { 
+            autoSkip: false, // Mantém false para garantir que os 10 apareçam
+            font: { size: 12 } // Com apenas 10, pode até aumentar um pouco a letra
+          } 
+        }
       }
     }
-  });
+});
 }
 
 function inicializarDashboard() {

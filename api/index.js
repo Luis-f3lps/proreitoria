@@ -68,7 +68,7 @@ app.post('/api/login', async (req, res) => {
 
 
 app.get('/',  (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'views', 'index.html'));
+    res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 app.get('/login',  (req, res) => {
     res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
