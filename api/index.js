@@ -77,7 +77,7 @@ app.get('/admin', Autenticado, (req, res) => {
     res.sendFile(path.join(process.cwd(), 'views', 'admin.html'));
 });
 
-app.get('/api/projetos', Autenticado, async (req, res) => {
+app.get('/api/projetos', async (req, res) => {
     try {
         const projetos = await sql`SELECT * FROM projetos ORDER BY id DESC`;
         res.json(projetos);
@@ -85,7 +85,6 @@ app.get('/api/projetos', Autenticado, async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar projetos' });
     }
 });
-
 app.post('/api/projetos', Autenticado, async (req, res) => {
     try {
         const dados = req.body;
