@@ -23,16 +23,17 @@ function Autenticado(req, res, next) {
         if (req.originalUrl.startsWith('/api')) {
             return res.status(401).json({ error: "Não autorizado" });
         }
-        return res.redirect('/login.html'); 
+        return res.redirect('/login');
     }
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.session = { user: decoded };
-        next(); 
+        next();
     } catch (err) {
         res.clearCookie('token');
-return res.redirect('/login');    }
+        return res.redirect('/login');
+    }
 }
 
 // ==========================================
@@ -51,9 +52,9 @@ app.post('/api/login', async (req, res) => {
         if (!match) return res.status(401).json({ error: 'Credenciais inválidas' });
 
         const token = jwt.sign({ email: user.email, tipo_usuario: user.tipo_usuario }, JWT_SECRET, { expiresIn: '8h' });
-        
-        res.cookie('token', token, { 
-            httpOnly: true, 
+
+        res.cookie('token', token, {
+            httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 8 * 60 * 60 * 1000,
             path: '/' // Importante para a Vercel
@@ -66,10 +67,10 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-app.get('/',  (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
-app.get('/login',  (req, res) => {
+app.get('/login', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
 });
 app.get('/admin', Autenticado, (req, res) => {
