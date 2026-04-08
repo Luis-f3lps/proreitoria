@@ -13,8 +13,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // --- ADICIONAR PROJETO ---
-// --- ADICIONAR PROJETO(S) ---
+  // --- ADICIONAR PROJETO(S) ---
   if (req.method === 'POST') {
     try {
       const dados = req.body;

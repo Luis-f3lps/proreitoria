@@ -13,6 +13,7 @@ function opentab(tabname) {
   }
   event.currentTarget.classList.add("active-link");
 }
+
 const isMobile = window.innerWidth <= 768;
 const inputPesquisa = document.getElementById('barraPesquisa');
 const containerLista = document.getElementById('containerLista');
@@ -28,6 +29,7 @@ const paletaCores = [
   '#ff9f43', '#1c5f52ff',
   '#6ac579ff'
 ];
+
 function contarOcorrencias(dados, chave) {
   return dados.reduce((acc, projeto) => {
     const valor = projeto[chave] || 'Não Informado';
@@ -36,33 +38,37 @@ function contarOcorrencias(dados, chave) {
   }, {});
 }
 
+// Isola a lógica de extrair o ano para podermos usar em vários lugares
+function extrairAno(projeto) {
+  let rawData = projeto['Vigência (Início)'];
+  if (!rawData) return null;
+  
+  const dataString = String(rawData).trim();
+  if (dataString === "") return null;
+
+  let ano;
+  if (!isNaN(dataString) && dataString.length === 4) {
+    ano = parseInt(dataString);
+  } else if (dataString.includes('/')) {
+    const partes = dataString.split('/');
+    if (partes.length === 3) ano = parseInt(partes[2]);
+  } else {
+    ano = new Date(dataString).getFullYear();
+  }
+
+  if (!isNaN(ano) && ano > 2000 && ano < 2100) {
+    return ano;
+  }
+  return null;
+}
+
 function contarProjetosPorAno(dados) {
   const contagem = {};
 
   dados.forEach(projeto => {
-    let rawData = projeto['Vigência (Início)'];
-
-    if (rawData) {
-      const dataString = String(rawData).trim();
-
-      if (dataString !== "") {
-        let ano;
-
-        if (!isNaN(dataString) && dataString.length === 4) {
-          ano = parseInt(dataString);
-        }
-        else if (dataString.includes('/')) {
-          const partes = dataString.split('/');
-          if (partes.length === 3) ano = parseInt(partes[2]);
-        }
-        else {
-          ano = new Date(dataString).getFullYear();
-        }
-
-        if (!isNaN(ano) && ano > 2000 && ano < 2100) {
-          contagem[ano] = (contagem[ano] || 0) + 1;
-        }
-      }
+    const ano = extrairAno(projeto);
+    if (ano) {
+      contagem[ano] = (contagem[ano] || 0) + 1;
     }
   });
 
@@ -81,6 +87,28 @@ function popularSelectUnidades() {
     option.value = unidade;
     option.textContent = unidade;
     selectUnidade.appendChild(option);
+  });
+}
+
+// Preenche o select de anos dinamicamente
+function popularSelectAnosCoordenador() {
+  const selectAno = document.getElementById('selectAnoCoordenador');
+  if (!selectAno) return;
+
+  const anosUnicos = new Set();
+  projetosIFNMG.forEach(projeto => {
+    const ano = extrairAno(projeto);
+    if (ano) anosUnicos.add(ano);
+  });
+
+  const anosOrdenados = [...anosUnicos].sort((a, b) => b - a); // Do mais recente para o mais antigo
+
+  selectAno.innerHTML = '<option value="">Todos os Anos</option>';
+  anosOrdenados.forEach(ano => {
+    const option = document.createElement('option');
+    option.value = ano;
+    option.textContent = ano;
+    selectAno.appendChild(option);
   });
 }
 
@@ -106,7 +134,6 @@ function renderizarLista(dados) {
         <i class="fa-solid fa-book" style="color: #0984e3;"></i> ${projeto['Área']} &nbsp;|&nbsp; 
         <i class="fa-solid fa-user" style="color: #6c5ce7;"></i> Coordenador: ${projeto['Coordenador']}&nbsp;|&nbsp; 
         <i class="fa-solid fa-folder" style="color: #6c5ce7;"></i> SEI: ${projeto['Processo SEI']}
-
       </small>
     `;
 
@@ -118,7 +145,6 @@ function renderizarLista(dados) {
 }
 
 function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
-  // Movido para dentro da função para ser recalculado sempre que os gráficos atualizarem
   const isMobile = window.innerWidth <= 768;
 
   const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
@@ -127,7 +153,18 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
   const contagemAreas = contarOcorrencias(dadosCompletos, 'Área');
   const dadosAno = contarProjetosPorAno(dadosCompletos);
 
-  const contagemCoordenadores = contarOcorrencias(dadosCompletos, 'Coordenador');
+  // LÓGICA DE FILTRO EXCLUSIVA PARA O GRÁFICO DE COORDENADORES
+  const selectAno = document.getElementById('selectAnoCoordenador');
+  const anoSelecionado = selectAno ? selectAno.value : "";
+
+  // Filtra os dados apenas para o gráfico de coordenadores com base no ano selecionado
+  const dadosParaCoordenadores = dadosCompletos.filter(projeto => {
+    if (anoSelecionado === "") return true; // Mostra tudo se for "Todos os Anos"
+    const anoProjeto = extrairAno(projeto);
+    return anoProjeto && anoProjeto.toString() === anoSelecionado;
+  });
+
+  const contagemCoordenadores = contarOcorrencias(dadosParaCoordenadores, 'Coordenador');
   const todosCoordenadoresOrdenados = Object.entries(contagemCoordenadores)
     .sort((a, b) => b[1] - a[1]);
 
@@ -152,6 +189,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     valoresCoordenadores = top20.map(item => item[1]);
   }
 
+  // Destruir gráficos anteriores
   if (graficoUnidades) graficoUnidades.destroy();
   if (graficoTipos) graficoTipos.destroy();
   if (graficoFormacao) graficoFormacao.destroy();
@@ -285,7 +323,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
           }
         }
       }
-    }
+    } // <-- AQUI ESTAVA O ERRO (faltava fechar a chave de options)
   });
 
   graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
@@ -320,6 +358,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
 
 function inicializarDashboard() {
   popularSelectUnidades();
+  popularSelectAnosCoordenador(); // Popula o select de anos
   atualizarGraficos(projetosIFNMG, projetosIFNMG);
   renderizarLista(projetosIFNMG);
 }
@@ -341,8 +380,16 @@ function aplicarFiltros() {
   renderizarLista(dadosParaLista);
 }
 
+// Event Listeners
 inputPesquisa.addEventListener('input', aplicarFiltros);
 selectUnidade.addEventListener('change', aplicarFiltros);
+
+// Event listener para atualizar ao mudar de ano
+const selectAnoCoordenador = document.getElementById('selectAnoCoordenador');
+if (selectAnoCoordenador) {
+  selectAnoCoordenador.addEventListener('change', aplicarFiltros);
+}
+
 let projetosIFNMG = [];
 
 async function buscarProjetosDoBanco() {
@@ -373,12 +420,12 @@ async function buscarProjetosDoBanco() {
   } catch (erro) {
     console.error("Erro ao carregar dados do banco:", erro);
     contadorProjetos.innerText = "Erro ao carregar projetos. Verifique o console.";
-    contadorProjetos.style.color = "#d63031"; // Fica vermelho se der erro
+    contadorProjetos.style.color = "#d63031"; 
   }
 }
 
-// Inicia buscando os dados em vez de iniciar o dashboard direto
 window.onload = buscarProjetosDoBanco;
+
 document.addEventListener("DOMContentLoaded", function () {
   const innerContainer = document.getElementById("logoloop-inner");
   const originalList = document.getElementById("original-list");
@@ -412,7 +459,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     innerContainer.style.setProperty("--scroll-distance", `${originalWidth}px`);
   }
-}); function toggleMenu() {
+}); 
+
+function toggleMenu() {
   const sidebar = document.getElementById('sidemenu');
   sidebar.classList.toggle('active');
 }
@@ -427,8 +476,8 @@ document.addEventListener('click', function (event) {
     }
   }
 });
-const navItems = document.querySelectorAll('.nav-links li');
 
+const navItems = document.querySelectorAll('.nav-links li');
 navItems.forEach(item => {
   item.addEventListener('click', function () {
     navItems.forEach(nav => nav.classList.remove('active'));
