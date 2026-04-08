@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <title>Administração - Projetos IFNMG</title>
+    <link rel="stylesheet" href="css/style2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="container">
+        <nav class="sidebar" id="sidemenu">
+            <div class="logo">
+                <div class="logo-box"></div>
+                <span>Admin</span>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html"><i class="fas fa-chart-pie"></i> <span>Ir para o Dashboard</span></a>
+                </li>
+                <li class="active">
+                    <a href="#adicionar"><i class="fas fa-plus-circle"></i> <span>Adicionar Projeto</span></a>
+                </li>
+                <li>
+                    <a href="#gerenciar"><i class="fas fa-tasks"></i> <span>Gerenciar Projetos</span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-header" id="topo">
+                <div class="header-left">
+                    <div class="breadcrumb"><i class="fas fa-cog"></i> / Administração</div>
+                    <p id="statusAdmin" style="font-weight: bold; color: #4caf50;">Carregando sistema...</p>
+                </div>
+            </header>
+
+            <section class="dashboard-grid" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div class="card wide" id="adicionar">
+                    <h3><i class="fas fa-plus-circle"></i> Adicionar Novo Projeto</h3>
+                    <form id="formNovoProjeto" onsubmit="adicionarProjeto(event)"
+                        style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                        <input type="text" id="addTitulo" placeholder="Título do Projeto" required
+                            style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input type="text" id="addArea" placeholder="Área" required
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                            <input type="text" id="addUnidade" placeholder="Unidade" required
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input type="text" id="addCoordenador" placeholder="Coordenador" required
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                            <input type="text" id="addTipo" placeholder="Tipo de Pesquisa" required
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input type="date" id="addInicio" title="Data de Início"
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                            <input type="text" id="addSEI" placeholder="Processo SEI"
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
+                        </div>
+
+                        <button type="submit" id="btnSalvar"
+                            style="background: #00b894; color: white; border: none; padding: 15px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.1em; transition: 0.3s;">
+                            <i class="fas fa-save"></i> Salvar no Banco de Dados
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card wide" id="gerenciar">
+                    <h3><i class="fas fa-tasks"></i> Projetos Existentes (Para Apagar)</h3>
+                    <div id="listaAdmin" style="margin-top: 15px;">
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

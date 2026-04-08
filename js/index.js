@@ -343,8 +343,37 @@ function aplicarFiltros() {
 
 inputPesquisa.addEventListener('input', aplicarFiltros);
 selectUnidade.addEventListener('change', aplicarFiltros);
-window.onload = inicializarDashboard;
+let projetosIFNMG = [];
 
+async function buscarProjetosDoBanco() {
+  try {
+    contadorProjetos.innerText = "Conectando ao banco de dados...";
+    
+    const resposta = await fetch('/api/projetos');
+    const dadosDoBanco = await resposta.json();
+    
+    projetosIFNMG = dadosDoBanco.map(projeto => ({
+      "Título do Projeto": projeto.titulo,
+      "Área": projeto.area,
+      "Unidade": projeto.unidade,
+      "Coordenador": projeto.coordenador,
+      "Tipo": projeto.tipo,
+      "Vigência (Início)": projeto.vigencia_inicio,
+      "Processo SEI": projeto.processo_sei,
+      "Formação": "Não Informada" 
+    }));
+
+    inicializarDashboard(); 
+    
+  } catch (erro) {
+    console.error("Erro ao carregar dados do banco:", erro);
+    contadorProjetos.innerText = "Erro ao carregar projetos. Verifique o console.";
+    contadorProjetos.style.color = "#d63031"; // Fica vermelho se der erro
+  }
+}
+
+// Inicia buscando os dados em vez de iniciar o dashboard direto
+window.onload = buscarProjetosDoBanco;
 document.addEventListener("DOMContentLoaded", function () {
   const innerContainer = document.getElementById("logoloop-inner");
   const originalList = document.getElementById("original-list");
