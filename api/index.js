@@ -123,6 +123,28 @@ app.delete('/api/projetos', Autenticado, async (req, res) => {
         res.status(500).json({ error: 'Erro ao apagar.' });
     }
 });
+// ==========================================
+// ROTA PARA O AUTH-GUARD (Verifica se está logado)
+// ==========================================
+app.get('/api/check-auth', (req, res) => {
+    const token = req.cookies.token;
+    if (!token) return res.json({ Autenticado: false });
 
+    try {
+        jwt.verify(token, JWT_SECRET);
+        res.json({ Autenticado: true });
+    } catch (err) {
+        res.json({ Autenticado: false });
+    }
+});
+
+// ==========================================
+// ROTA DE LOGOUT (Destrói o Cookie)
+// ==========================================
+app.get('/api/logout', (req, res) => {
+    // Apaga o cookie 'token' do navegador do usuário
+    res.clearCookie('token', { path: '/' });
+    res.json({ message: 'Logout efetuado com sucesso' });
+});
 // O MAIOR SEGREDO DA VERCEL: Não use app.listen(). Exporte o app!
 export default app;
