@@ -51,16 +51,21 @@
                             style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
 
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <input type="text" id="addArea" placeholder="Área" required
-                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
-                            <input type="text" id="addUnidade" placeholder="Unidade" required
-                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
-                        </div>
-
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <input type="text" id="addArea" placeholder="Área" required
-                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px;">
-
+                            <select id="addArea" required
+                                style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px; background-color: white; color: #555;">
+                                <option value="" disabled selected>Selecione a Grande Área</option>
+                                <option value="Ciências Agrárias">Ciências Agrárias</option>
+                                <option value="Ciências Biológicas">Ciências Biológicas</option>
+                                <option value="Ciências da Saúde">Ciências da Saúde</option>
+                                <option value="Ciências Exatas e da Terra">Ciências Exatas e da Terra</option>
+                                <option value="Ciências Humanas">Ciências Humanas</option>
+                                <option value="Ciências Sociais Aplicadas">Ciências Sociais Aplicadas</option>
+                                <option value="Engenharias">Engenharias</option>
+                                <option value="Interdisciplinar">Interdisciplinar</option>
+                                <option value="Letras e Artes">Letras e Artes</option>
+                                <option value="Lingüística">Lingüística</option>
+                                <option value="Não Informado">Não Informado</option>
+                            </select>
                             <select id="addUnidade" required
                                 style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; flex: 1; min-width: 200px; background-color: white; color: #555;">
                                 <option value="" disabled selected>Selecione a Unidade / Campus</option>
