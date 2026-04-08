@@ -326,9 +326,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
     } // <-- AQUI ESTAVA O ERRO (faltava fechar a chave de options)
   });
 
-// Pega apenas os 10 primeiros da lista
-const labelsTop10 = labelsCoordenadores.slice(0, 10);
-const valoresTop10 = valoresCoordenadores.slice(0, 10);
+nod
 
 graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
     type: isMobile ? 'pie' : 'bar',
