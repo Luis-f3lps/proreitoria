@@ -330,10 +330,10 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
 graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
     type: isMobile ? 'pie' : 'bar',
     data: {
-      labels: labelsTop10, // 🚀 Usando apenas os 10 nomes
+      labels: labelsCoordenadores, // CORRIGIDO AQUI!
       datasets: [{
         label: 'Total de Projetos',
-        data: valoresTop10, // 🚀 Usando apenas os 10 valores
+        data: valoresCoordenadores, // CORRIGIDO AQUI!
         backgroundColor: isMobile ? paletaCores : '#6c5ce7',
         borderWidth: isMobile ? 0 : 1,
         borderRadius: isMobile ? 0 : 4
@@ -357,13 +357,13 @@ graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores')
         y: { 
           grid: { display: false },
           ticks: { 
-            autoSkip: false, // Mantém false para garantir que os 10 apareçam
-            font: { size: 12 } // Com apenas 10, pode até aumentar um pouco a letra
+            autoSkip: false, 
+            font: { size: 12 } 
           } 
         }
       }
     }
-});
+  });
 }
 
 function inicializarDashboard() {
