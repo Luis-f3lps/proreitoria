@@ -323,10 +323,9 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
           }
         }
       }
-    } // <-- AQUI ESTAVA O ERRO (faltava fechar a chave de options)
+    } 
   });
 
-nod
 
 graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
     type: isMobile ? 'pie' : 'bar',
