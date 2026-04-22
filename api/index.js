@@ -16,6 +16,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "chaveSuperSecretaDoInventario2026"
 // ==========================================
 // 1. MIDDLEWARE DE PROTEÇÃO
 // ==========================================
+// ==========================================
+// 1. MIDDLEWARE DE PROTEÇÃO
+// ==========================================
 function Autenticado(req, res, next) {
     const token = req.cookies.token;
 
@@ -23,7 +26,8 @@ function Autenticado(req, res, next) {
         if (req.originalUrl.startsWith('/api')) {
             return res.status(401).json({ error: "Não autorizado" });
         }
-        return res.redirect('/login');
+        // AJUSTE AQUI: Coloque .html no final
+        return res.redirect('/login.html');
     }
 
     try {
@@ -32,7 +36,8 @@ function Autenticado(req, res, next) {
         next();
     } catch (err) {
         res.clearCookie('token');
-        return res.redirect('/login');
+        // AJUSTE AQUI: Coloque .html no final
+        return res.redirect('/login.html');
     }
 }
 
