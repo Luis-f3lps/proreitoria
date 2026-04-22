@@ -71,15 +71,14 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-
 app.get('/', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 app.get('/admin', Autenticado, (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'views', 'admin.html'));
+    res.sendFile(path.join(__dirname, 'views', 'admin.html'));
 });
 
 app.get('/api/projetos', async (req, res) => {
