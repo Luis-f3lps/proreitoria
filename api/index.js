@@ -16,9 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "chaveSuperSecretaDoInventario2026"
 // ==========================================
 // 1. MIDDLEWARE DE PROTEÇÃO
 // ==========================================
-// ==========================================
-// 1. MIDDLEWARE DE PROTEÇÃO
-// ==========================================
+
 function Autenticado(req, res, next) {
     const token = req.cookies.token;
 
@@ -26,7 +24,6 @@ function Autenticado(req, res, next) {
         if (req.originalUrl.startsWith('/api')) {
             return res.status(401).json({ error: "Não autorizado" });
         }
-        // AJUSTE AQUI: Coloque .html no final
         return res.redirect('/login.html');
     }
 
@@ -36,13 +33,12 @@ function Autenticado(req, res, next) {
         next();
     } catch (err) {
         res.clearCookie('token');
-        // AJUSTE AQUI: Coloque .html no final
         return res.redirect('/login.html');
     }
 }
 
 // ==========================================
-// 2. ROTA DE LOGIN (Gera o Cookie)
+// 2. ROTA DE LOGIN 
 // ==========================================
 app.post('/api/login', async (req, res) => {
     const { email, senha } = req.body;
@@ -62,7 +58,7 @@ app.post('/api/login', async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 8 * 60 * 60 * 1000,
-            path: '/' // Importante para a Vercel
+            path: '/' 
         });
 
         res.json({ success: true, tipo_usuario: user.tipo_usuario });
@@ -127,7 +123,7 @@ app.delete('/api/projetos', Autenticado, async (req, res) => {
     }
 });
 // ==========================================
-// ROTA PARA O AUTH-GUARD (Verifica se está logado)
+// ROTA PARA O AUTH-GUARD 
 // ==========================================
 app.get('/api/check-auth', (req, res) => {
     const token = req.cookies.token;
@@ -142,10 +138,9 @@ app.get('/api/check-auth', (req, res) => {
 });
 
 // ==========================================
-// ROTA DE LOGOUT (Destrói o Cookie)
+// ROTA DE LOGOUT 
 // ==========================================
 app.get('/api/logout', (req, res) => {
-    // Apaga o cookie 'token' do navegador do usuário
     res.clearCookie('token', { path: '/' });
     res.json({ message: 'Logout efetuado com sucesso' });
 });
