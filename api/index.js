@@ -74,7 +74,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 app.get('/admin', Autenticado, (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'admin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 app.get('/api/projetos', async (req, res) => {
@@ -149,7 +149,6 @@ app.get('/api/logout', (req, res) => {
 // ==========================================
 
 app.post('/api/criar-usuario', async (req, res) => {
-    // Agora estamos pegando o nome_usuario do req.body
     const { nome_usuario, email, senha, tipo_usuario } = req.body;
     
     try {

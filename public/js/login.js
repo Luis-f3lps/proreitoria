@@ -17,7 +17,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
             const errorMessage = document.getElementById('error-message');
             if (data.success) {
                 // Redireciona para o admin após sucesso
-                window.location.href = '/admin.html';
+                window.location.href = '/admin';
             } else {
                 errorMessage.innerText = data.error;
                 errorMessage.style.display = 'block';
