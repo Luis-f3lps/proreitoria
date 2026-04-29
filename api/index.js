@@ -147,18 +147,18 @@ app.get('/api/logout', (req, res) => {
 // ==========================================
 // ROTA TEMPORÁRIA PARA CRIAR USUÁRIO
 // ==========================================
+
 app.post('/api/criar-usuario', async (req, res) => {
-    const { email, senha, tipo_usuario } = req.body;
+    // Agora estamos pegando o nome_usuario do req.body
+    const { nome_usuario, email, senha, tipo_usuario } = req.body;
     
     try {
-        // Criptografa a senha com bcrypt (igual o login espera)
         const salt = await bcrypt.genSalt(10);
         const senhaHash = await bcrypt.hash(senha, salt);
 
-        // Insere no banco Neon (considerando que os campos são esses)
         await sql`
-            INSERT INTO usuario (email, senha, status, tipo_usuario) 
-            VALUES (${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
+            INSERT INTO usuario (nome_usuario, email, senha, status, tipo_usuario) 
+            VALUES (${nome_usuario}, ${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
         `;
         
         res.status(201).json({ message: 'Usuário criado com sucesso no banco!' });
