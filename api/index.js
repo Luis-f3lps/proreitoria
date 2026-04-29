@@ -144,5 +144,27 @@ app.get('/api/logout', (req, res) => {
     res.clearCookie('token', { path: '/' });
     res.json({ message: 'Logout efetuado com sucesso' });
 });
+// ==========================================
+// ROTA TEMPORÁRIA PARA CRIAR USUÁRIO
+// ==========================================
+app.post('/api/criar-usuario', async (req, res) => {
+    const { email, senha, tipo_usuario } = req.body;
+    
+    try {
+        // Criptografa a senha com bcrypt (igual o login espera)
+        const salt = await bcrypt.genSalt(10);
+        const senhaHash = await bcrypt.hash(senha, salt);
 
+        // Insere no banco Neon (considerando que os campos são esses)
+        await sql`
+            INSERT INTO usuario (email, senha, status, tipo_usuario) 
+            VALUES (${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
+        `;
+        
+        res.status(201).json({ message: 'Usuário criado com sucesso no banco!' });
+    } catch (error) {
+        console.error("Erro ao inserir:", error);
+        res.status(500).json({ error: 'Erro ao criar usuário', detalhes: error.message });
+    }
+});
 export default app;
