@@ -42,7 +42,7 @@ function contarOcorrencias(dados, chave) {
 function extrairAno(projeto) {
   let rawData = projeto['Vigência (Início)'];
   if (!rawData) return null;
-  
+
   const dataString = String(rawData).trim();
   if (dataString === "") return null;
 
@@ -149,17 +149,25 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
 
   const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
   const contagemTipos = contarOcorrencias(dadosCompletos, 'Tipo');
-  const contagemFormacao = contarOcorrencias(dadosCompletos, 'Formação');
-  const contagemAreas = contarOcorrencias(dadosCompletos, 'Área');
+  const coordenadoresVistos = new Set();
+  const formacoesUnicas = [];
+
+  dadosCompletos.forEach(projeto => {
+    const nome = projeto['Coordenador'];
+    if (nome && !coordenadoresVistos.has(nome)) {
+      coordenadoresVistos.add(nome);
+      formacoesUnicas.push(projeto);
+    }
+  });
+
+  const contagemFormacao = contarOcorrencias(formacoesUnicas, 'Formação');
   const dadosAno = contarProjetosPorAno(dadosCompletos);
 
-  // LÓGICA DE FILTRO EXCLUSIVA PARA O GRÁFICO DE COORDENADORES
   const selectAno = document.getElementById('selectAnoCoordenador');
   const anoSelecionado = selectAno ? selectAno.value : "";
 
-  // Filtra os dados apenas para o gráfico de coordenadores com base no ano selecionado
   const dadosParaCoordenadores = dadosCompletos.filter(projeto => {
-    if (anoSelecionado === "") return true; // Mostra tudo se for "Todos os Anos"
+    if (anoSelecionado === "") return true;
     const anoProjeto = extrairAno(projeto);
     return anoProjeto && anoProjeto.toString() === anoSelecionado;
   });
@@ -323,11 +331,11 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
           }
         }
       }
-    } 
+    }
   });
 
 
-graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
+  graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores'), {
     type: isMobile ? 'pie' : 'bar',
     data: {
       labels: labelsCoordenadores, // CORRIGIDO AQUI!
@@ -350,16 +358,16 @@ graficoCoordenadores = new Chart(document.getElementById('graficoCoordenadores')
         }
       },
       scales: isMobile ? {} : {
-        x: { 
-          beginAtZero: true, 
-          ticks: { stepSize: 1 } 
+        x: {
+          beginAtZero: true,
+          ticks: { stepSize: 1 }
         },
-        y: { 
+        y: {
           grid: { display: false },
-          ticks: { 
-            autoSkip: false, 
-            font: { size: 12 } 
-          } 
+          ticks: {
+            autoSkip: false,
+            font: { size: 12 }
+          }
         }
       }
     }
@@ -430,7 +438,7 @@ async function buscarProjetosDoBanco() {
   } catch (erro) {
     console.error("Erro ao carregar dados do banco:", erro);
     contadorProjetos.innerText = "Erro ao carregar projetos. Verifique o console.";
-    contadorProjetos.style.color = "#d63031"; 
+    contadorProjetos.style.color = "#d63031";
   }
 }
 
@@ -469,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     innerContainer.style.setProperty("--scroll-distance", `${originalWidth}px`);
   }
-}); 
+});
 
 function toggleMenu() {
   const sidebar = document.getElementById('sidemenu');
