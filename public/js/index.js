@@ -149,6 +149,7 @@ function atualizarGraficos(dadosCompletos, dadosSemFiltroUnidade) {
 
   const contagemUnidades = contarOcorrencias(dadosSemFiltroUnidade, 'Unidade');
   const contagemTipos = contarOcorrencias(dadosCompletos, 'Tipo');
+  const contagemAreas = contarOcorrencias(dadosCompletos, 'Área');
   const coordenadoresVistos = new Set();
   const formacoesUnicas = [];
 
