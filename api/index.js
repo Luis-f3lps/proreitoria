@@ -76,9 +76,7 @@ app.get('/index', (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
-app.get('/admin', Autenticado, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
+
 
 app.get('/api/projetos', async (req, res) => {
     try {
