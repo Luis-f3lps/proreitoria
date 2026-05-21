@@ -1,3 +1,8 @@
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import express from 'express';
 import path from 'path';
 import { neon } from '@neondatabase/serverless';
@@ -11,8 +16,7 @@ app.use(cookieParser());
 
 // Conexão Neon
 const sql = neon(process.env.DATABASE_URL);
-const JWT_SECRET = process.env.JWT_SECRET || "chaveSuperSecretaDoInventario2026";
-
+const JWT_SECRET = process.env.JWT_SECRET;
 // ==========================================
 // 1. MIDDLEWARE DE PROTEÇÃO
 // ==========================================
@@ -154,22 +158,22 @@ app.get('/api/logout', (req, res) => {
 // ROTA TEMPORÁRIA PARA CRIAR USUÁRIO
 // ==========================================
 
-app.post('/api/criar-usuario', async (req, res) => {
-    const { nome_usuario, email, senha, tipo_usuario } = req.body;
+//app.post('/api/criar-usuario', async (req, res) => {
+//    const { nome_usuario, email, senha, tipo_usuario } = req.body;
     
-    try {
-        const salt = await bcrypt.genSalt(10);
-        const senhaHash = await bcrypt.hash(senha, salt);
-
-        await sql`
-            INSERT INTO usuario (nome_usuario, email, senha, status, tipo_usuario) 
-            VALUES (${nome_usuario}, ${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
-        `;
-        
-        res.status(201).json({ message: 'Usuário criado com sucesso no banco!' });
-    } catch (error) {
-        console.error("Erro ao inserir:", error);
-        res.status(500).json({ error: 'Erro ao criar usuário', detalhes: error.message });
-    }
-});
+  //  try {
+ //       const salt = await bcrypt.genSalt(10);
+  //      const senhaHash = await bcrypt.hash(senha, salt);
+//
+  //      await sql`
+  //          INSERT INTO usuario (nome_usuario, email, senha, status, tipo_usuario) 
+  //          VALUES (${nome_usuario}, ${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
+   //     `;
+//        
+  //      res.status(201).json({ message: 'Usuário criado com sucesso no banco!' });
+//   } catch (error) {
+  //      console.error("Erro ao inserir:", error);
+//        res.status(500).json({ error: 'Erro ao criar usuário', detalhes: error.message });
+//    }
+//});
 export default app;
