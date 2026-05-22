@@ -1,14 +1,9 @@
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-import express from 'express';
-import path from 'path';
-import { neon } from '@neondatabase/serverless';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
+const express = require('express');
+const path = require('path');
+const { neon } = require('@neondatabase/serverless');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(express.json());
@@ -17,6 +12,7 @@ app.use(cookieParser());
 // Conexão Neon
 const sql = neon(process.env.DATABASE_URL);
 const JWT_SECRET = process.env.JWT_SECRET;
+
 // ==========================================
 // 1. MIDDLEWARE DE PROTEÇÃO
 // ==========================================
@@ -95,6 +91,7 @@ app.get('/api/projetos', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar projetos' });
     }
 });
+
 app.post('/api/projetos', Autenticado, async (req, res) => {
     try {
         const dados = req.body;
@@ -132,6 +129,7 @@ app.delete('/api/projetos', Autenticado, async (req, res) => {
         res.status(500).json({ error: 'Erro ao apagar.' });
     }
 });
+
 // ==========================================
 // ROTA PARA O AUTH-GUARD 
 // ==========================================
@@ -154,26 +152,5 @@ app.get('/api/logout', (req, res) => {
     res.clearCookie('token', { path: '/' });
     res.json({ message: 'Logout efetuado com sucesso' });
 });
-// ==========================================
-// ROTA TEMPORÁRIA PARA CRIAR USUÁRIO
-// ==========================================
 
-//app.post('/api/criar-usuario', async (req, res) => {
-//    const { nome_usuario, email, senha, tipo_usuario } = req.body;
-    
-  //  try {
- //       const salt = await bcrypt.genSalt(10);
-  //      const senhaHash = await bcrypt.hash(senha, salt);
-//
-  //      await sql`
-  //          INSERT INTO usuario (nome_usuario, email, senha, status, tipo_usuario) 
-  //          VALUES (${nome_usuario}, ${email}, ${senhaHash}, 'ativo', ${tipo_usuario})
-   //     `;
-//        
-  //      res.status(201).json({ message: 'Usuário criado com sucesso no banco!' });
-//   } catch (error) {
-  //      console.error("Erro ao inserir:", error);
-//        res.status(500).json({ error: 'Erro ao criar usuário', detalhes: error.message });
-//    }
-//});
-export default app;
+module.exports = app;
